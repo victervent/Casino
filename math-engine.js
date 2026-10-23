@@ -910,21 +910,14 @@
     return out;
   }
 
-  function weightedQuantile(sorted, weights, total, p) {
+  function quantileOfSorted(sorted, p) {
     if (!sorted.length) return NaN;
-    const pos = p * (total - 1);
-    let cum = 0;
-    for (let i = 0; i < sorted.length; i++) {
-      const next = cum + weights[i];
-      if (pos <= next - 1) return sorted[i];
-      if (pos < next) {
-        const ratio = (pos - (next - 1)) / weights[i];
-        const nextVal = sorted[i + 1] != null ? sorted[i + 1] : sorted[i];
-        return sorted[i] + ratio * (nextVal - sorted[i]);
-      }
-      cum = next;
-    }
-    return sorted[sorted.length - 1];
+    const pos = p * (sorted.length - 1);
+    const base = Math.floor(pos);
+    const ratio = pos - base;
+    const lower = sorted[base];
+    const upper = sorted[base + 1] != null ? sorted[base + 1] : lower;
+    return lower + ratio * (upper - lower);
   }
 
   function stats1(rows, options) {
@@ -942,11 +935,9 @@
     const mean = sum / total;
     const varPop = sumSq / total - mean * mean;
     const varSample = total > 1 ? (sumSq - total * mean * mean) / (total - 1) : 0;
-    const sortedUnique = Array.from(new Set(expanded)).sort((a, b) => a - b);
-    const weights = sortedUnique.map((v) => expanded.filter((x) => x === v).length);
-    const q1 = weightedQuantile(sortedUnique, weights, total, 0.25);
-    const med = weightedQuantile(sortedUnique, weights, total, 0.5);
-    const q3 = weightedQuantile(sortedUnique, weights, total, 0.75);
+    const q1 = quantileOfSorted(sorted, 0.25);
+    const med = quantileOfSorted(sorted, 0.5);
+    const q3 = quantileOfSorted(sorted, 0.75);
     let maxFreq = 0;
     const modes = [];
     cleanRows.forEach((r) => {
