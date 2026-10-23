@@ -674,21 +674,6 @@ a { color: var(--amber); }
   color: #314437;
 }
 .lcd-menu-head span { font-size: 7px; color: #5a6b5d; font-family: var(--font-ui); }
-.menu-extra-link {
-  appearance: none;
-  border: 1px solid rgba(35, 48, 39, 0.24);
-  background: rgba(35, 48, 39, 0.08);
-  color: #3c5344;
-  border-radius: 4px;
-  min-height: 18px;
-  padding: 3px 6px;
-  font-family: var(--font-tech);
-  font-size: 7px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  cursor: pointer;
-}
-.menu-extra-link:hover { background: rgba(35, 48, 39, 0.16); }
 .lcd-menu-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -1840,6 +1825,8 @@ a { color: var(--amber); }
 .segmented.small { display: inline-flex; flex-wrap: nowrap; margin-bottom: 0; padding: 3px; }
 .segmented.small .seg-btn { min-width: 52px; min-height: 25px; padding: 3px 8px; font-size: 8.5px; }
 .segmented.small .seg-btn.is-active { background: rgba(242,165,68,0.14); }
+.triangle-tabs { margin-bottom: 0; }
+.triangle-tabs .seg-btn { min-width: 0; padding-left: 5px; padding-right: 5px; }
 
 /* Biểu mẫu */
 .form-grid {
