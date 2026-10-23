@@ -1735,7 +1735,6 @@ a { color: var(--amber); }
 }
 .section-title span { color: #6d7871; font-size: 9px; }
 
-/* Bộ chọn chế độ trong modal */
 .mode-picker-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1781,7 +1780,7 @@ a { color: var(--amber); }
 }
 .mode-choice small {
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+
   -webkit-box-orient: vertical;
   overflow: hidden;
   color: #7d8981;
@@ -3045,7 +3044,7 @@ a { color: var(--amber); }
 }
 .extra-tool-card small {
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+
   -webkit-box-orient: vertical;
   overflow: hidden;
   color: #7d8981;
