@@ -2036,7 +2036,7 @@
           <span class="mode-choice-text"><strong>${escapeHtml(tool.name)}</strong><small>${escapeHtml(tool.desc)}</small></span>
         </button>`).join("")}</div>
       <div class="button-row between">
-        <span class="tiny-label">Mẹo: nhấn MENU trên máy rồi chọn MỞ RỘNG để vào nhanh công cụ.</span>
+        <span class="tiny-label">Mẹo: nhấn MENU trên máy rồi chọn ô MỞ RỘNG ở cuối menu để vào nhanh công cụ.</span>
         <button class="btn ghost small" type="button" data-close-modal>Đóng</button>
       </div>`;
     openModal({
@@ -2073,7 +2073,7 @@
           <span class="mode-choice-text"><strong>${escapeHtml(tool.name)}</strong><small>${escapeHtml(tool.desc)}</small></span>
         </button>`).join("")}</div>
       <div class="button-row between">
-        <span class="tiny-label">Mẹo: bấm MENU trên máy → MỞ RỘNG để quay lại đây.</span>
+        <span class="tiny-label">Mẹo: từ MENU, chọn ô MỞ RỘNG ở cuối để quay lại đây.</span>
         <button class="btn ghost small" type="button" data-close-modal>Đóng</button>
       </div>`;
     openModal({
@@ -2386,10 +2386,12 @@
     const units = conversionUnits(conversionState.category);
     const from = units.find((u) => u.id === conversionState.from) || units[0];
     const to = units.find((u) => u.id === conversionState.to) || units[1] || units[0];
-    const input = Number(conversionState.value);
+    const raw = String(conversionState.value == null ? "" : conversionState.value).trim().replace(",", ".");
+    const input = raw ? Number(raw) : NaN;
     const baseValue = input * from.factor + (from.offset || 0);
-    const output = Number.isFinite(input) ? (baseValue - (to.offset || 0)) / to.factor : NaN;
-    return { from, to, input, output };
+    const belowAbsoluteZero = conversionState.category === "temperature" && Number.isFinite(input) && baseValue < 0;
+    const output = Number.isFinite(input) && !belowAbsoluteZero ? (baseValue - (to.offset || 0)) / to.factor : NaN;
+    return { from, to, input, output, belowAbsoluteZero };
   }
 
   function openConversionsModal() {
@@ -2431,17 +2433,17 @@
         const update = () => {
           conversionState.value = valueInput.value;
           const result = currentConversion();
-          $("#convFromValue", root).textContent = `${formatNumericText(result.input, { numberFormat: "norm1" })} ${result.from.symbol}`;
-          $("#convToValue", root).textContent = `${Number.isFinite(result.output) ? formatNumericText(result.output, { numberFormat: "norm1" }) : "—"} ${result.to.symbol}`;
-          $("#convExact", root).textContent = Number.isFinite(result.output) ? `${formatNumericText(result.output, { numberFormat: "sci", sciDigits: 10 })} ${result.to.symbol}` : "Nhập một số hợp lệ.";
+          const inputText = Number.isFinite(result.input) ? formatNumericText(result.input, { numberFormat: "norm1" }) : "—";
+          const outputText = Number.isFinite(result.output) ? formatNumericText(result.output, { numberFormat: "norm1" }) : "—";
+          $("#convFromValue", root).textContent = `${inputText} ${result.from.symbol}`;
+          $("#convToValue", root).textContent = `${outputText} ${result.to.symbol}`;
+          $("#convExact", root).textContent = result.belowAbsoluteZero
+            ? "Nhiệt độ thấp hơn 0 K."
+            : Number.isFinite(result.output)
+              ? `${formatNumericText(result.output, { numberFormat: "sci", sciDigits: 10 })} ${result.to.symbol}`
+              : "Nhập một số hợp lệ.";
         };
-        valueInput.addEventListener("input", () => {
-          conversionState.value = valueInput.value;
-          const result = currentConversion();
-          $("#convFromValue", root).textContent = `${formatNumericText(result.input, { numberFormat: "norm1" })} ${result.from.symbol}`;
-          $("#convToValue", root).textContent = `${Number.isFinite(result.output) ? formatNumericText(result.output, { numberFormat: "norm1" }) : "—"} ${result.to.symbol}`;
-          $("#convExact", root).textContent = Number.isFinite(result.output) ? `${formatNumericText(result.output, { numberFormat: "sci", sciDigits: 10 })} ${result.to.symbol}` : "Nhập một số hợp lệ.";
-        });
+        valueInput.addEventListener("input", update);
         $$("[data-conv-category]", root).forEach((button) => button.addEventListener("click", () => {
           conversionState.category = button.dataset.convCategory;
           const nextUnits = conversionUnits(conversionState.category);
@@ -2827,7 +2829,7 @@
           <li>Xem trước biểu thức, dùng ví dụ mẫu hoặc chèn nguyên công thức vào màn hình tính toán.</li>
         </ul></div>
       </div>
-      <div class="about-box"><b>Lưu ý:</b> Đây là mô phỏng học tập độc lập. Nigsio là thương hiệu hư cấu của bản web và không liên kết với Casio Computer Co., Ltd. Kết quả số thực dùng dấu chấm thập phân theo chuẩn quốc tế. Một số chức năng nâng cao dùng thuật toán xấp xỉ nhưng được kiểm chứng trong phạm vi máy tính khoa học thông thường.</div>
+      <div class="about-box"><b>Lưu ý:</b> Đây là mô phỏng học tập độc lập. Kết quả số thực dùng dấu chấm thập phân theo chuẩn quốc tế. Một số chức năng nâng cao dùng thuật toán xấp xỉ nhưng được kiểm chứng trong phạm vi máy tính khoa học thông thường.</div>
       <div class="button-row end"><button class="btn primary" type="button" data-close-modal>Đã hiểu</button></div>`;
     openModal({
       title: "Hướng dẫn sử dụng",
@@ -6107,297 +6109,6 @@
   }
 
   /* ============================================================
-   * CÔNG CỤ MỞ RỘNG: ĐỔI ĐƠN VỊ
-   * ============================================================ */
-  const UNIT_GROUPS = [
-    {
-      id: "length", name: "Độ dài",
-      units: [
-        { id: "m", name: "Mét", symbol: "m", factor: 1 },
-        { id: "km", name: "Kilômét", symbol: "km", factor: 1000 },
-        { id: "cm", name: "Xentimét", symbol: "cm", factor: 0.01 },
-        { id: "mm", name: "Milimét", symbol: "mm", factor: 0.001 },
-        { id: "in", name: "Inch", symbol: "in", factor: 0.0254 },
-        { id: "ft", name: "Foot", symbol: "ft", factor: 0.3048 },
-        { id: "yd", name: "Yard", symbol: "yd", factor: 0.9144 },
-        { id: "mi", name: "Dặm", symbol: "mi", factor: 1609.344 }
-      ]
-    },
-    {
-      id: "mass", name: "Khối lượng",
-      units: [
-        { id: "kg", name: "Kilôgam", symbol: "kg", factor: 1 },
-        { id: "g", name: "Gam", symbol: "g", factor: 0.001 },
-        { id: "mg", name: "Miligam", symbol: "mg", factor: 0.000001 },
-        { id: "t", name: "Tấn", symbol: "t", factor: 1000 },
-        { id: "lb", name: "Pound", symbol: "lb", factor: 0.45359237 },
-        { id: "oz", name: "Ounce", symbol: "oz", factor: 0.028349523125 }
-      ]
-    },
-    {
-      id: "area", name: "Diện tích",
-      units: [
-        { id: "m2", name: "Mét vuông", symbol: "m²", factor: 1 },
-        { id: "km2", name: "Kilômét vuông", symbol: "km²", factor: 1000000 },
-        { id: "cm2", name: "Xentimét vuông", symbol: "cm²", factor: 0.0001 },
-        { id: "ha", name: "Hecta", symbol: "ha", factor: 10000 },
-        { id: "acre", name: "Mẫu Anh", symbol: "acre", factor: 4046.8564224 },
-        { id: "ft2", name: "Foot vuông", symbol: "ft²", factor: 0.09290304 }
-      ]
-    },
-    {
-      id: "volume", name: "Thể tích",
-      units: [
-        { id: "l", name: "Lít", symbol: "L", factor: 1 },
-        { id: "ml", name: "Mililít", symbol: "mL", factor: 0.001 },
-        { id: "m3", name: "Mét khối", symbol: "m³", factor: 1000 },
-        { id: "cm3", name: "Xentimét khối", symbol: "cm³", factor: 0.001 },
-        { id: "gal", name: "Gallon (US)", symbol: "gal", factor: 3.785411784 }
-      ]
-    },
-    {
-      id: "speed", name: "Tốc độ",
-      units: [
-        { id: "ms", name: "Mét/giây", symbol: "m/s", factor: 1 },
-        { id: "kmh", name: "Kilômét/giờ", symbol: "km/h", factor: 1 / 3.6 },
-        { id: "mph", name: "Dặm/giờ", symbol: "mph", factor: 0.44704 },
-        { id: "knot", name: "Hải lý/giờ", symbol: "kn", factor: 0.514444444 }
-      ]
-    },
-    {
-      id: "energy", name: "Năng lượng",
-      units: [
-        { id: "j", name: "Joule", symbol: "J", factor: 1 },
-        { id: "kj", name: "Kilojoule", symbol: "kJ", factor: 1000 },
-        { id: "cal", name: "Calorie", symbol: "cal", factor: 4.184 },
-        { id: "kcal", name: "Kilocalorie", symbol: "kcal", factor: 4184 },
-        { id: "wh", name: "Watt-giờ", symbol: "Wh", factor: 3600 },
-        { id: "kwh", name: "Kilowatt-giờ", symbol: "kWh", factor: 3600000 }
-      ]
-    },
-    {
-      id: "pressure", name: "Áp suất",
-      units: [
-        { id: "pa", name: "Pascal", symbol: "Pa", factor: 1 },
-        { id: "kpa", name: "Kilopascal", symbol: "kPa", factor: 1000 },
-        { id: "bar", name: "Bar", symbol: "bar", factor: 100000 },
-        { id: "atm", name: "Atmốtphe", symbol: "atm", factor: 101325 },
-        { id: "mmhg", name: "Milimét thủy ngân", symbol: "mmHg", factor: 133.322368 }
-      ]
-    },
-    {
-      id: "time", name: "Thời gian",
-      units: [
-        { id: "s", name: "Giây", symbol: "s", factor: 1 },
-        { id: "min", name: "Phút", symbol: "min", factor: 60 },
-        { id: "h", name: "Giờ", symbol: "h", factor: 3600 },
-        { id: "day", name: "Ngày", symbol: "ngày", factor: 86400 },
-        { id: "week", name: "Tuần", symbol: "tuần", factor: 604800 }
-      ]
-    },
-    {
-      id: "data", name: "Dữ liệu số",
-      units: [
-        { id: "b", name: "Byte", symbol: "B", factor: 1 },
-        { id: "kb", name: "Kilobyte", symbol: "KB", factor: 1024 },
-        { id: "mb", name: "Megabyte", symbol: "MB", factor: 1048576 },
-        { id: "gb", name: "Gigabyte", symbol: "GB", factor: 1073741824 },
-        { id: "tb", name: "Terabyte", symbol: "TB", factor: 1099511627776 },
-        { id: "bit", name: "Bit", symbol: "bit", factor: 0.125 }
-      ]
-    },
-    {
-      id: "temperature", name: "Nhiệt độ", special: true,
-      units: [
-        { id: "c", name: "Celsius", symbol: "°C" },
-        { id: "f", name: "Fahrenheit", symbol: "°F" },
-        { id: "k", name: "Kelvin", symbol: "K" }
-      ]
-    }
-  ];
-  const unitState = { group: "length", value: "1", from: "m", to: "km" };
-  let unitResult = "";
-  let unitLastInsert = "";
-
-  function unitGroupDef() {
-    return UNIT_GROUPS.find((group) => group.id === unitState.group) || UNIT_GROUPS[0];
-  }
-
-  function unitPairFor(group) {
-    const from = group.units.some((unit) => unit.id === unitState.from) ? unitState.from : group.units[0].id;
-    const to = group.units.some((unit) => unit.id === unitState.to) ? unitState.to : (group.units[1] || group.units[0]).id;
-    unitState.from = from;
-    unitState.to = to;
-    return {
-      from: group.units.find((unit) => unit.id === from),
-      to: group.units.find((unit) => unit.id === to)
-    };
-  }
-
-  function unitNumber(value, label) {
-    const text = String(value == null ? "" : value).trim().replace(",", ".");
-    if (!text) throw new E.CalcError("Syntax ERROR", `${label} chưa được nhập`);
-    const number = Number(text);
-    if (!Number.isFinite(number)) throw new E.CalcError("Syntax ERROR", `${label} không hợp lệ`);
-    return number;
-  }
-
-  function temperatureToCelsius(value, unitId) {
-    if (unitId === "f") return (value - 32) * 5 / 9;
-    if (unitId === "k") return value - 273.15;
-    return value;
-  }
-
-  function temperatureFromCelsius(value, unitId) {
-    if (unitId === "f") return value * 9 / 5 + 32;
-    if (unitId === "k") return value + 273.15;
-    return value;
-  }
-
-  function unitConvert() {
-    const group = unitGroupDef();
-    const { from, to } = unitPairFor(group);
-    const value = unitNumber(unitState.value, "Giá trị");
-    let result;
-    let factor = null;
-    if (group.special) {
-      const celsius = temperatureToCelsius(value, from.id);
-      if (celsius < -273.15 - 1e-9) throw new E.CalcError("Math ERROR", "Nhiệt độ thấp hơn 0 K");
-      result = temperatureFromCelsius(celsius, to.id);
-    } else {
-      factor = from.factor / to.factor;
-      result = value * factor;
-      if (!Number.isFinite(result)) throw new E.CalcError("Math ERROR", "Kết quả vượt phạm vi");
-    }
-    return { group, from, to, value, result, factor };
-  }
-
-  function unitPreviewText() {
-    try {
-      const info = unitConvert();
-      return `${formatNumericText(info.value)} ${info.from.symbol} = ${formatNumericText(info.result)} ${info.to.symbol}`;
-    } catch (error) {
-      return "Nhập giá trị và chọn đơn vị để xem kết quả.";
-    }
-  }
-
-  function unitResultMarkup() {
-    return unitResult || `<div class="result-empty">Chọn nhóm đơn vị, nhập giá trị rồi bấm <b>Tính</b> để quy đổi.</div>`;
-  }
-
-  function runUnit(root) {
-    const target = $("#unitResults", root);
-    try {
-      const info = unitConvert();
-      unitLastInsert = insertableNumericText(info.result);
-      unitResult = card(
-        "KẾT QUẢ QUY ĐỔI",
-        `${formatNumericText(info.result)}<span class="physics-unit">${escapeHtml(info.to.symbol)}</span>`,
-        `${formatNumericText(info.value)} ${escapeHtml(info.from.symbol)} → ${escapeHtml(info.to.symbol)} · ${escapeHtml(info.group.name)}`
-      ) + `<div class="metric-grid">
-        ${metric("Giá trị gốc", `${formatNumericText(info.value)} ${escapeHtml(info.from.symbol)}`, true)}
-        ${metric("Kết quả", `${formatNumericText(info.result)} ${escapeHtml(info.to.symbol)}`)}
-        ${info.factor == null ? metric("Công thức", "Quy đổi nhiệt độ") : metric("Hệ số quy đổi", formatNumericText(info.factor))}
-      </div>`;
-      if (target) target.innerHTML = unitResult;
-    } catch (error) {
-      unitLastInsert = "";
-      unitResult = errorBox(error);
-      if (target) target.innerHTML = unitResult;
-    }
-  }
-
-  function openUnitWorkspace(group) {
-    closeModal();
-    if (group && UNIT_GROUPS.some((item) => item.id === group) && group !== unitState.group) {
-      unitState.group = group;
-      const next = unitGroupDef();
-      unitState.from = next.units[0].id;
-      unitState.to = (next.units[1] || next.units[0]).id;
-      unitResult = "";
-      unitLastInsert = "";
-    }
-    const current = unitGroupDef();
-    const pair = unitPairFor(current);
-    const body = workspaceLead("Quy đổi nhanh giữa các đơn vị thường gặp. Chọn nhóm, nhập giá trị, chọn đơn vị nguồn và đích rồi bấm <strong>Tính</strong>.") +
-      `<div class="form-grid"><div class="field field-wide"><label>Nhóm đơn vị</label><select id="unitGroup">${UNIT_GROUPS.map((item) => `<option value="${item.id}" ${item.id === current.id ? "selected" : ""}>${escapeHtml(item.name)}</option>`).join("")}</select></div></div>
-      <div class="form-grid three" style="margin-top:12px">
-        <div class="field"><label>Giá trị</label><input id="unitValue" value="${escapeHtml(unitState.value)}" inputmode="decimal" autocomplete="off"></div>
-        <div class="field"><label>Từ</label><select id="unitFrom">${current.units.map((unit) => `<option value="${unit.id}" ${unit.id === pair.from.id ? "selected" : ""}>${escapeHtml(unit.name)} (${escapeHtml(unit.symbol)})</option>`).join("")}</select></div>
-        <div class="field"><label>Sang</label><select id="unitTo">${current.units.map((unit) => `<option value="${unit.id}" ${unit.id === pair.to.id ? "selected" : ""}>${escapeHtml(unit.name)} (${escapeHtml(unit.symbol)})</option>`).join("")}</select></div>
-      </div>
-      <div class="equation-preview" id="unitPreview">${escapeHtml(unitPreviewText())}</div>
-      <div id="unitResults" class="physics-results" aria-live="polite">${unitResultMarkup()}</div>
-      <div class="button-row between">
-        <span class="tiny-label">Hỗ trợ 10 nhóm đơn vị, gồm quy đổi nhiệt độ.</span>
-        <div class="button-row compact">
-          <button class="btn ghost small" type="button" id="unitSwap">Hoán đổi</button>
-          <button class="btn ghost small" type="button" id="unitSample">Mẫu</button>
-          <button class="btn ghost small" type="button" id="unitInsert">Dùng kết quả</button>
-          <button class="btn primary small" type="button" id="unitCompute">Tính</button>
-        </div>
-      </div>`;
-    openModal({
-      title: "Đổi đơn vị",
-      kicker: "UNIT CONVERTER · 10 NHÓM ĐƠN VỊ",
-      icon: "convert",
-      wide: true,
-      body,
-      onMount(root) {
-        $("#unitGroup", root).addEventListener("change", (event) => openUnitWorkspace(event.target.value));
-        $("#unitValue", root).addEventListener("input", (event) => {
-          unitState.value = event.target.value;
-          unitResult = "";
-          unitLastInsert = "";
-          const preview = $("#unitPreview", root);
-          if (preview) preview.textContent = unitPreviewText();
-          const results = $("#unitResults", root);
-          if (results) results.innerHTML = unitResultMarkup();
-        });
-        ["#unitFrom", "#unitTo"].forEach((selector) => {
-          $(selector, root).addEventListener("change", () => {
-            unitState.from = $("#unitFrom", root).value;
-            unitState.to = $("#unitTo", root).value;
-            unitResult = "";
-            unitLastInsert = "";
-            const preview = $("#unitPreview", root);
-            if (preview) preview.textContent = unitPreviewText();
-            const results = $("#unitResults", root);
-            if (results) results.innerHTML = unitResultMarkup();
-          });
-        });
-        $("#unitSwap", root).addEventListener("click", () => {
-          const from = unitState.from;
-          unitState.from = unitState.to;
-          unitState.to = from;
-          unitResult = "";
-          unitLastInsert = "";
-          openUnitWorkspace();
-        });
-        $("#unitSample", root).addEventListener("click", () => {
-          unitState.value = "1";
-          unitResult = "";
-          unitLastInsert = "";
-          openUnitWorkspace();
-        });
-        $("#unitCompute", root).addEventListener("click", () => runUnit(root));
-        $("#unitInsert", root).addEventListener("click", () => {
-          if (!unitLastInsert) {
-            showToast("Hãy tính một kết quả trước.");
-            return;
-          }
-          const value = unitLastInsert;
-          closeModal();
-          setTimeout(() => {
-            insertText(value, value.length);
-            showToast("Đã chèn kết quả quy đổi vào màn hình.");
-          }, 100);
-        });
-      }
-    });
-  }
-
-  /* ============================================================
    * CÔNG CỤ MỞ RỘNG: GIẢI TAM GIÁC
    * ============================================================ */
   const TRIANGLE_METHODS = [
@@ -6439,10 +6150,11 @@
     const largest = sides[2] * sides[2];
     const rest = sides[0] * sides[0] + sides[1] * sides[1];
     const equal = Math.abs(a - b) < 1e-9 && Math.abs(b - c) < 1e-9;
+    const isosceles = Math.abs(a - b) < 1e-9 || Math.abs(b - c) < 1e-9 || Math.abs(c - a) < 1e-9;
     if (equal) return "Tam giác đều";
-    if (Math.abs(largest - rest) < 1e-7) return "Tam giác vuông";
-    if (largest > rest) return "Tam giác tù";
-    return "Tam giác nhọn";
+    if (Math.abs(largest - rest) <= Math.max(1, rest) * 1e-10) return isosceles ? "Tam giác vuông cân" : "Tam giác vuông";
+    if (largest > rest) return isosceles ? "Tam giác tù cân" : "Tam giác tù";
+    return isosceles ? "Tam giác cân" : "Tam giác nhọn";
   }
 
   function triangleFromSides(a, b, c) {
@@ -6507,7 +6219,7 @@
     try {
       const info = triangleCompute();
       triangleLastInsert = insertableNumericText(info.area);
-      const degree = (value) => `${formatNumericText(value)}°`;
+      const degree = (value) => `${formatNumericText(Number(value.toFixed(4)))}°`;
       triangleResult = card(
         `DIỆN TÍCH · ${info.type.toUpperCase()}`,
         `${formatNumericText(info.area)}<span class="physics-unit">đvdt</span>`,
@@ -6538,7 +6250,6 @@
       triangleLastInsert = "";
     }
     const current = triangleMethodDef();
-    const currentValues = triangleValues();
     const body = workspaceLead("Giải tam giác bằng ba cách: biết ba cạnh (SSS), biết hai cạnh và góc xen giữa (SAS), hoặc biết một cạnh và hai góc (ASA). Kết quả gồm cạnh, góc, chu vi, diện tích và loại tam giác.") +
       `<div class="segmented triangle-tabs">${TRIANGLE_METHODS.map((item) => `<button class="seg-btn ${item.id === current.id ? "is-active" : ""}" type="button" data-triangle-method="${item.id}">${escapeHtml(item.name)}</button>`).join("")}</div>
       <div class="field-hint" style="margin-top:10px">${escapeHtml(current.hint)}</div>
@@ -6621,9 +6332,15 @@
     const target = $("#quickStatsResults", root);
     try {
       const numbers = quickStatsNumbers();
-      const rows = numbers.map((value) => ({ x: String(value), f: "1" }));
+      const counts = new Map();
+      numbers.forEach((value) => counts.set(value, (counts.get(value) || 0) + 1));
+      const rows = Array.from(counts.entries()).map(([value, frequency]) => ({ x: String(value), f: String(frequency) }));
       const stats = E.stats1(rows, {});
-      const modeText = stats.mode && stats.mode.length ? stats.mode.map((value) => formatNumericText(value)).join(", ") : "—";
+      const maxFrequency = Math.max(...counts.values());
+      const modes = maxFrequency > 1
+        ? Array.from(counts.entries()).filter((entry) => entry[1] === maxFrequency).map((entry) => entry[0])
+        : [];
+      const modeText = modes.length ? modes.map((value) => formatNumericText(value)).join(", ") : "—";
       quickStatsLastInsert = insertableNumericText(stats.mean);
       quickStatsResult = card("THỐNG KÊ NHANH", `x̄ = ${formatNumericText(stats.mean)}`, `${stats.n} giá trị · Tổng = ${formatNumericText(stats.sum)}`) +
         `<div class="metric-grid">
@@ -7668,7 +7385,7 @@
       case "inference": openInferenceWorkspace(); break;
       case "quickstats": openQuickStatsWorkspace(); break;
       case "number": openNumberWorkspace(); break;
-      case "units": openUnitWorkspace(); break;
+      case "units": openConversionsModal(); break;
       case "finance": openFinanceWorkspace(); break;
       case "physics": openPhysicsWorkspace(); break;
       case "series": openSeriesWorkspace(); break;
@@ -7738,7 +7455,7 @@
     if (event.key === "F2") { event.preventDefault(); handleTopAction("alpha"); return; }
     if (state.menuOpen) {
       if (event.key === "Escape") { event.preventDefault(); state.menuOpen = false; renderScreen(); renderModeDock(); return; }
-      if (event.key === "Enter") { event.preventDefault(); selectMenuMode(state.menuIndex); return; }
+      if (event.key === "Enter" || event.key === "=") { event.preventDefault(); selectMenuMode(state.menuIndex); return; }
       if (event.key === "ArrowUp" || event.key === "ArrowDown" || event.key === "ArrowLeft" || event.key === "ArrowRight") {
         event.preventDefault();
         handleTopAction(event.key === "ArrowUp" ? "up" : event.key === "ArrowDown" ? "down" : event.key === "ArrowLeft" ? "left" : "right");
@@ -7924,6 +7641,7 @@
       screenContent.addEventListener("click", (event) => {
         const extraLink = event.target.closest("[data-menu-extra]");
         if (extraLink) {
+          state.menuIndex = MODES.length;
           state.menuOpen = false;
           renderScreen();
           renderModeDock();
@@ -7969,4 +7687,5 @@
   }
 
 })();
+
 
