@@ -275,6 +275,17 @@
         { id: "week", name: "tuần", symbol: "tuần", factor: 604800 },
         { id: "year", name: "năm (365,25 ngày)", symbol: "năm", factor: 31557600 }
       ]
+    },
+    {
+      id: "data", name: "Dữ liệu số", icon: "data",
+      units: [
+        { id: "B", name: "byte", symbol: "B", factor: 1 },
+        { id: "KB", name: "kilobyte", symbol: "KB", factor: 1024 },
+        { id: "MB", name: "megabyte", symbol: "MB", factor: 1048576 },
+        { id: "GB", name: "gigabyte", symbol: "GB", factor: 1073741824 },
+        { id: "TB", name: "terabyte", symbol: "TB", factor: 1099511627776 },
+        { id: "bit", name: "bit", symbol: "bit", factor: 0.125 }
+      ]
     }
   ];
 
@@ -284,7 +295,7 @@
     "S⇔D chuyển đổi qua lại giữa phân số, căn thức và số thập phân.",
     "Dùng ◀ ▶ để di chuyển con trỏ, ▲ ▼ để gọi lại lịch sử.",
     "Trong chế độ Cơ số N, dùng phím A–F trên dải màu xanh để nhập số hex.",
-    "Ấn MENU để mở 12 chế độ; bấm MỞ RỘNG trong menu để vào các công cụ nâng cao.",
+    "Ấn MENU để mở 12 chế độ; bấm ô MỞ RỘNG ở cuối menu để vào các công cụ nâng cao.",
     "Ví dụ tích phân: integral(x^2,0,3) cho kết quả 9.",
     "Ví dụ thống kê: nhập dữ liệu, chọn mô hình hồi quy và bấm Tính."
   ];
