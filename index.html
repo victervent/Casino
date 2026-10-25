@@ -8,7 +8,7 @@
   <title>NIGSIO motkikiX </title>
 </head>
 <style>
-  /* ============================================================
+/* ============================================================
    NIGSIO motkikiX — Web Emulator
    Thiết kế giao diện & hiệu ứng
    ============================================================ */
@@ -262,45 +262,54 @@ a { color: var(--amber); }
 /* ---------- Thân máy ---------- */
 .calculator {
   --key-h: clamp(38px, 4.6vh, 44px);
+  --case-edge: rgba(255, 255, 255, 0.15);
   position: relative;
   width: 100%;
   padding: 20px 21px 16px;
-  border-radius: 31px 31px 25px 25px;
+  border-radius: 33px 33px 27px 27px;
   background:
-    radial-gradient(120% 70% at 34% -8%, rgba(255,255,255,0.115), transparent 48%),
-    radial-gradient(90% 50% at 70% 2%, rgba(128, 143, 151, 0.07), transparent 60%),
+    linear-gradient(112deg, rgba(255,255,255,0.1) 0%, transparent 18%, transparent 82%, rgba(255,255,255,0.035) 100%),
+    radial-gradient(120% 70% at 34% -8%, rgba(255,255,255,0.12), transparent 48%),
+    radial-gradient(90% 50% at 70% 2%, rgba(128, 143, 151, 0.08), transparent 60%),
     repeating-linear-gradient(112deg, rgba(255,255,255,0.017) 0 1px, transparent 1px 4px),
-    linear-gradient(158deg, #2a3035 0%, #1a1f23 33%, #111519 65%, #090c0e 100%);
-  border: 1px solid rgba(255, 255, 255, 0.105);
+    linear-gradient(158deg, #30363b 0%, #1d2226 31%, #12171b 63%, #080b0d 100%);
+  border: 1px solid var(--case-edge);
   box-shadow:
-    0 55px 100px -24px rgba(0, 0, 0, 0.78),
-    0 18px 34px rgba(0, 0, 0, 0.46),
-    inset 0 1px 0 rgba(255, 255, 255, 0.19),
-    inset 0 -2px 1px rgba(0, 0, 0, 0.84),
-    inset 1px 0 0 rgba(255, 255, 255, 0.035);
+    0 0 0 1px rgba(0, 0, 0, 0.58),
+    0 0 0 3px rgba(255, 255, 255, 0.025),
+    0 60px 110px -26px rgba(0, 0, 0, 0.84),
+    0 20px 38px rgba(0, 0, 0, 0.48),
+    inset 0 2px 0 rgba(255, 255, 255, 0.14),
+    inset 0 -3px 2px rgba(0, 0, 0, 0.9),
+    inset 1px 0 0 rgba(255, 255, 255, 0.04),
+    inset -1px 0 0 rgba(0, 0, 0, 0.4);
   isolation: isolate;
 }
 .calculator::before {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: 6px;
   z-index: -1;
-  border-radius: inherit;
+  border-radius: 28px 28px 22px 22px;
+  border: 1px solid rgba(255, 255, 255, 0.045);
   pointer-events: none;
   background:
     radial-gradient(100% 44% at 16% 0%, rgba(255,255,255,0.06), transparent 38%),
     linear-gradient(90deg, rgba(0,0,0,0.22), transparent 14%, transparent 82%, rgba(0,0,0,0.24));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.045),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.55);
 }
 .calculator::after {
   content: "";
   position: absolute;
-  left: 5%;
-  right: 5%;
-  bottom: -9px;
-  height: 12px;
+  left: 4%;
+  right: 4%;
+  bottom: -11px;
+  height: 15px;
   border-radius: 50%;
-  background: rgba(0,0,0,0.48);
-  filter: blur(9px);
+  background: rgba(0,0,0,0.56);
+  filter: blur(10px);
   z-index: -2;
 }
 .calc-head {
@@ -626,23 +635,107 @@ a { color: var(--amber); }
   display: inline-flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   vertical-align: middle;
-  line-height: 1.05;
-  margin: 0 0.09em;
+  line-height: 1.02;
+  padding: 0 0.08em;
+  margin: 0 0.12em;
   transform: translateY(-0.03em);
 }
 .lcd-fraction .frac-num {
-  display: block;
-  padding: 0 0.2em 0.08em;
-  border-bottom: 1.5px solid currentColor;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0.95em;
+  padding: 0 0.2em 0.1em;
+  border-bottom: 1.7px solid currentColor;
+  box-shadow: 0 2px 0 rgba(255,255,255,0.1);
 }
-.lcd-fraction .frac-den { display: block; padding: 0.08em 0.2em 0; }
+.lcd-fraction .frac-den {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0.95em;
+  padding: 0.1em 0.2em 0;
+}
+.lcd-fraction .lcd-slot-frac {
+  min-width: 1.22em;
+  height: 1.04em;
+  margin: 0;
+  border-color: rgba(35, 48, 39, 0.48);
+  background: rgba(35, 48, 39, 0.055);
+}
+.lcd-fraction .lcd-slot-frac .lcd-caret { height: 0.88em; }
 .lcd-mixed {
   display: inline-flex;
   align-items: center;
-  gap: 0.08em;
+  gap: 0.1em;
   vertical-align: middle;
 }
+.lcd-slot-whole { min-width: 1.1em; height: 1.04em; }
+.lcd-deriv {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.06em;
+  vertical-align: middle;
+  margin: 0 0.1em;
+}
+.lcd-deriv .deriv-op {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6em;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  transform: translateY(-0.02em);
+}
+.lcd-deriv .deriv-top { padding: 0 0.16em 0.06em; }
+.lcd-deriv .deriv-bottom {
+  padding: 0.06em 0.16em 0;
+  border-top: 1.35px solid currentColor;
+}
+.lcd-deriv .deriv-body {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.01em;
+}
+.lcd-deriv .deriv-paren {
+  display: inline-block;
+  font-size: 1.24em;
+  line-height: 1;
+  transform: scaleY(1.1);
+  opacity: 0.9;
+}
+.lcd-deriv .deriv-at {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.14em;
+  margin-left: 0.06em;
+  font-size: 0.62em;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.lcd-deriv .deriv-bar {
+  display: inline-block;
+  width: 1px;
+  height: 1.55em;
+  border-radius: 1px;
+  background: currentColor;
+  opacity: 0.65;
+}
+.lcd-deriv .deriv-at-label { font-weight: 600; opacity: 0.88; }
+.lcd-deriv .lcd-deriv-slot {
+  min-width: 1.15em;
+  height: 1.05em;
+  margin: 0;
+  border-color: rgba(35, 48, 39, 0.42);
+  background: rgba(35, 48, 39, 0.045);
+  vertical-align: middle;
+}
+.lcd-deriv .lcd-deriv-slot .lcd-caret { height: 0.86em; }
+.lcd-result .lcd-deriv .lcd-slot { border-color: rgba(35, 48, 39, 0.3); }
 .lcd-surd { display: inline-flex; align-items: flex-start; vertical-align: middle; }
 .lcd-surd .surd-sign {
   font-family: "Segoe UI Symbol", sans-serif;
@@ -3358,6 +3451,264 @@ a { color: var(--amber); }
 /* ---------- Tài chính ---------- */
 .finance-results { min-width: 0; }
 .finance-results .metric-value { font-size: 12px; }
+.finance-tabs .seg-btn { min-width: 78px; }
+
+/* ---------- Hóa học ---------- */
+.chem-tabs .seg-btn { min-width: 120px; }
+.chem-search-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.chem-search-row input {
+  flex: 1;
+  min-width: 0;
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.09);
+  background: rgba(255,255,255,0.03);
+  color: #e6ece5;
+  font-size: 12.5px;
+  outline: none;
+}
+.chem-search-row input:focus { border-color: rgba(242,165,68,0.45); background: rgba(242,165,68,0.045); }
+.chem-search-results {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: -2px 0 10px;
+}
+.chem-search-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.09);
+  background: rgba(255,255,255,0.035);
+  color: #b8c3ba;
+  font-size: 10px;
+}
+.chem-search-chip b { color: #f5d19a; font-family: var(--font-display); font-size: 12px; }
+.chem-search-chip small { color: #748078; font-size: 8.5px; }
+.chem-search-chip:hover { border-color: rgba(242,165,68,0.35); background: rgba(242,165,68,0.08); }
+.chem-search-empty { color: #89958c; font-size: 11px; margin: -2px 0 10px; }
+
+.periodic-scroll {
+  overflow-x: auto;
+  padding: 4px 2px 7px;
+  margin: 0 -2px;
+  scrollbar-width: thin;
+}
+.periodic-table {
+  display: grid;
+  grid-template-columns: repeat(18, minmax(38px, 1fr));
+  grid-template-rows: repeat(7, 42px) 13px repeat(2, 40px);
+  gap: 3px;
+  min-width: 780px;
+}
+.element-cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: 2px 1px;
+  border-radius: 5px;
+  border: 1px solid rgba(255,255,255,0.09);
+  background: rgba(255,255,255,0.045);
+  color: #e0e7de;
+  overflow: hidden;
+  transition: transform 120ms ease, border-color 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+}
+.element-cell:hover, .element-cell:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(255,255,255,0.28);
+  filter: brightness(1.18);
+  z-index: 2;
+}
+.element-cell.is-active {
+  border-color: var(--amber-hot);
+  box-shadow: 0 0 0 1px rgba(242,165,68,0.35), 0 0 18px rgba(242,165,68,0.16);
+  z-index: 3;
+}
+.element-cell .element-z {
+  position: absolute;
+  top: 2px;
+  left: 3px;
+  color: rgba(255,255,255,0.48);
+  font-family: var(--font-tech);
+  font-size: 6.5px;
+  line-height: 1;
+}
+.element-cell .element-symbol {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.element-cell.cat-alkali { background: linear-gradient(155deg, rgba(239,112,74,0.28), rgba(239,112,74,0.12)); }
+.element-cell.cat-alkaline { background: linear-gradient(155deg, rgba(235,166,75,0.27), rgba(235,166,75,0.11)); }
+.element-cell.cat-transition { background: linear-gradient(155deg, rgba(100,150,198,0.25), rgba(100,150,198,0.1)); }
+.element-cell.cat-post { background: linear-gradient(155deg, rgba(127,143,166,0.24), rgba(127,143,166,0.1)); }
+.element-cell.cat-lanthanide { background: linear-gradient(155deg, rgba(176,126,205,0.26), rgba(176,126,205,0.1)); }
+.element-cell.cat-actinide { background: linear-gradient(155deg, rgba(201,121,160,0.25), rgba(201,121,160,0.1)); }
+.element-cell.cat-metalloid { background: linear-gradient(155deg, rgba(92,174,145,0.25), rgba(92,174,145,0.1)); }
+.element-cell.cat-nonmetal { background: linear-gradient(155deg, rgba(91,172,201,0.24), rgba(91,172,201,0.09)); }
+.element-cell.cat-halogen { background: linear-gradient(155deg, rgba(117,183,224,0.25), rgba(117,183,224,0.1)); }
+.element-cell.cat-noble { background: linear-gradient(155deg, rgba(164,140,216,0.27), rgba(164,140,216,0.1)); }
+.f-block-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  border: 1px dashed rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.02);
+  color: #6e7a72;
+  font-family: var(--font-tech);
+  font-size: 7px;
+  letter-spacing: 0.02em;
+}
+.periodic-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px 14px;
+  margin: 9px 0 14px;
+  color: #93a098;
+  font-size: 9px;
+}
+.legend-item { display: inline-flex; align-items: center; gap: 5px; }
+.cat-dot { display: inline-block; width: 8px; height: 8px; border-radius: 2px; border: 1px solid rgba(255,255,255,0.12); }
+.cat-dot.cat-alkali { background: #d66d4d; }
+.cat-dot.cat-alkaline { background: #d39a45; }
+.cat-dot.cat-transition { background: #5f93c3; }
+.cat-dot.cat-post { background: #7e8fa6; }
+.cat-dot.cat-lanthanide { background: #a77ac0; }
+.cat-dot.cat-actinide { background: #c0799f; }
+.cat-dot.cat-metalloid { background: #5cae91; }
+.cat-dot.cat-nonmetal { background: #5bacc9; }
+.cat-dot.cat-halogen { background: #75b7e0; }
+.cat-dot.cat-noble { background: #a48cd8; }
+.chem-detail {
+  display: flex;
+  gap: 15px;
+  margin-top: 4px;
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.075);
+  background:
+    radial-gradient(120% 140% at 0% 0%, rgba(242,165,68,0.075), transparent 48%),
+    rgba(0,0,0,0.14);
+}
+.chem-detail-symbol {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 82px;
+  width: 82px;
+  height: 82px;
+  border-radius: 9px;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #f7e4c5;
+}
+.chem-detail-symbol > span { position: absolute; top: 5px; left: 7px; font-size: 8px; color: rgba(255,255,255,0.58); font-family: var(--font-tech); }
+.chem-detail-symbol > strong { font-family: var(--font-display); font-size: 27px; line-height: 1; }
+.chem-detail-copy { min-width: 0; flex: 1; }
+.chem-detail-kicker { display: block; color: #a38d6d; font-family: var(--font-tech); font-size: 8px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.chem-detail-copy h3 { margin: 3px 0 9px; color: #f1f4ed; font-size: 20px; font-weight: 600; }
+.chem-detail-stats { display: flex; flex-wrap: wrap; gap: 9px 22px; }
+.chem-detail-stats span { display: flex; flex-direction: column; gap: 2px; }
+.chem-detail-stats b { color: #e7e9df; font-family: var(--font-display); font-size: 13px; font-weight: 500; }
+.chem-detail-stats small { color: #7f8b83; font-size: 8px; }
+.chem-detail-copy p { margin: 10px 0 0; color: #9ba79e; font-size: 10.5px; line-height: 1.55; }
+.chem-detail-symbol.cat-alkali { background: rgba(239,112,74,0.18); }
+.chem-detail-symbol.cat-alkaline { background: rgba(235,166,75,0.18); }
+.chem-detail-symbol.cat-transition { background: rgba(100,150,198,0.18); }
+.chem-detail-symbol.cat-post { background: rgba(127,143,166,0.18); }
+.chem-detail-symbol.cat-lanthanide { background: rgba(176,126,205,0.18); }
+.chem-detail-symbol.cat-actinide { background: rgba(201,121,160,0.18); }
+.chem-detail-symbol.cat-metalloid { background: rgba(92,174,145,0.18); }
+.chem-detail-symbol.cat-nonmetal { background: rgba(91,172,201,0.18); }
+.chem-detail-symbol.cat-halogen { background: rgba(117,183,224,0.18); }
+.chem-detail-symbol.cat-noble { background: rgba(164,140,216,0.18); }
+
+.chem-formula-form { margin-top: 4px; }
+.chem-samples { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; margin: 9px 0 14px; }
+.chem-samples button {
+  padding: 4px 7px;
+  border-radius: 5px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.035);
+  color: #aebbb1;
+  font-family: var(--font-display);
+  font-size: 9.5px;
+}
+.chem-samples button:hover { color: #ffd8a0; border-color: rgba(242,165,68,0.3); background: rgba(242,165,68,0.08); }
+.chem-formula-results { min-width: 0; }
+.chem-unit { margin-left: 5px; color: #8d998f; font-size: 0.45em; font-weight: 400; letter-spacing: 0; }
+.chem-metrics { margin-top: 12px; }
+.chem-table-wrap { overflow-x: auto; margin-top: 13px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.07); }
+.chem-table { width: 100%; min-width: 560px; border-collapse: collapse; font-size: 10.5px; }
+.chem-table th {
+  padding: 8px 9px;
+  text-align: left;
+  color: #8b978e;
+  font-family: var(--font-tech);
+  font-size: 7.5px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  background: rgba(255,255,255,0.035);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.chem-table td { padding: 8px 9px; color: #c7d0c8; border-bottom: 1px solid rgba(255,255,255,0.045); }
+.chem-table tr:last-child td { border-bottom: none; }
+.chem-table td:first-child { display: flex; align-items: center; gap: 7px; }
+.chem-mini-symbol { display: inline-flex; align-items: center; justify-content: center; width: 23px; height: 23px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); font-family: var(--font-display); font-size: 10px; color: #f2e3ca; }
+.chem-mini-symbol.cat-transition { background: rgba(100,150,198,0.2); }
+.chem-mini-symbol.cat-nonmetal { background: rgba(91,172,201,0.2); }
+.chem-mini-symbol.cat-alkali { background: rgba(239,112,74,0.2); }
+.chem-mini-symbol.cat-alkaline { background: rgba(235,166,75,0.2); }
+.chem-mini-symbol.cat-post { background: rgba(127,143,166,0.2); }
+.chem-mini-symbol.cat-metalloid { background: rgba(92,174,145,0.2); }
+.chem-mini-symbol.cat-halogen { background: rgba(117,183,224,0.2); }
+.chem-mini-symbol.cat-noble { background: rgba(164,140,216,0.2); }
+.chem-mini-symbol.cat-lanthanide { background: rgba(176,126,205,0.2); }
+.chem-mini-symbol.cat-actinide { background: rgba(201,121,160,0.2); }
+.chem-metal-list { display: grid; gap: 8px; margin-top: 12px; }
+.chem-metal-card { display: flex; align-items: center; gap: 11px; padding: 10px 12px; border-radius: 9px; border: 1px solid rgba(242,165,68,0.17); background: rgba(242,165,68,0.055); }
+.chem-metal-symbol { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 40px; width: 40px; height: 40px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.13); color: #ffdfb2; font-family: var(--font-display); font-size: 17px; }
+.chem-metal-symbol.cat-transition { background: rgba(100,150,198,0.25); }
+.chem-metal-symbol.cat-alkali { background: rgba(239,112,74,0.25); }
+.chem-metal-symbol.cat-alkaline { background: rgba(235,166,75,0.25); }
+.chem-metal-symbol.cat-post { background: rgba(127,143,166,0.25); }
+.chem-metal-symbol.cat-lanthanide { background: rgba(176,126,205,0.25); }
+.chem-metal-symbol.cat-actinide { background: rgba(201,121,160,0.25); }
+.chem-metal-copy { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.chem-metal-kicker { color: #b28e5d; font-family: var(--font-tech); font-size: 7.5px; font-weight: 600; letter-spacing: 0.08em; }
+.chem-metal-copy strong { color: #f1e6d3; font-size: 13px; font-weight: 600; }
+.chem-metal-copy small { color: #9aa69d; font-size: 9.5px; }
+.chem-note { margin-top: 12px; }
+.chem-methods { margin-bottom: 13px; }
+.chem-material-form { margin-top: 2px; }
+.chem-metal-form { margin-top: 2px; }
+.chem-metal-results { margin-top: 15px; }
+.chem-best-name { margin-left: 8px; color: #f0e3ce; font-size: 0.45em; font-weight: 500; letter-spacing: 0; vertical-align: middle; }
+.chem-candidate-list { display: grid; gap: 6px; margin-top: 11px; }
+.chem-candidate { display: flex; align-items: center; gap: 10px; padding: 9px 11px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.07); background: rgba(255,255,255,0.025); text-align: left; color: #c6d0c7; }
+.chem-candidate:hover { border-color: rgba(242,165,68,0.3); background: rgba(242,165,68,0.05); }
+.chem-candidate.is-best { border-color: rgba(242,165,68,0.28); background: rgba(242,165,68,0.065); }
+.chem-candidate-symbol { display: inline-flex; align-items: center; justify-content: center; width: 31px; height: 31px; border-radius: 5px; border: 1px solid rgba(255,255,255,0.1); font-family: var(--font-display); font-size: 13px; }
+.chem-candidate > span:nth-child(2) { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.chem-candidate strong { color: #e9eee6; font-size: 11.5px; font-weight: 600; }
+.chem-candidate small { color: #87938b; font-size: 9px; }
+.chem-candidate em { margin-left: auto; color: #e2ae62; font-size: 8px; font-style: normal; }
 
 /* ============================================================
    TĂNG CỠ CHỮ & ĐỘ RÕ
@@ -3660,7 +4011,24 @@ a { color: var(--amber); }
   .mode-dock.extra-dock { gap: 2px; }
   .mode-dock.extra-dock .dock-chip.extra-chip { padding: 0 3px; font-size: 8.5px; }
 }
-
+@media (max-width: 720px) {
+  .periodic-table { grid-template-columns: repeat(18, 36px); grid-template-rows: repeat(7, 40px) 11px repeat(2, 38px); min-width: 702px; }
+  .element-cell .element-symbol { font-size: 13px; }
+  .chem-detail { flex-direction: column; }
+  .chem-detail-symbol { width: 100%; height: 64px; flex-basis: 64px; }
+  .chem-detail-symbol > strong { font-size: 23px; }
+  .chem-tabs .seg-btn, .finance-tabs .seg-btn { min-width: 0; flex: 1 1 46%; }
+  .chem-search-row { align-items: stretch; flex-direction: column; gap: 6px; }
+  .chem-search-row .tiny-label { padding-left: 2px; }
+}
+@media (max-width: 520px) {
+  .periodic-table { grid-template-columns: repeat(18, 33px); grid-template-rows: repeat(7, 37px) 10px repeat(2, 35px); min-width: 642px; gap: 2px; }
+  .element-cell .element-symbol { font-size: 11.5px; }
+  .element-cell .element-z { font-size: 5.5px; top: 1px; left: 2px; }
+  .chem-tabs .seg-btn { flex: 1 1 100%; }
+  .chem-candidate em { display: none; }
+  .chem-table { min-width: 500px; }
+}
 </style>
 <body>
   <div class="ambient ambient-a" aria-hidden="true"></div>
@@ -3839,7 +4207,7 @@ a { color: var(--amber); }
   <div class="sr-only" id="screenReader" aria-live="assertive"></div>
 
   <script>
-    /*
+/*
  * NIGSIO motkikiX — Web Emulator
  * Bộ máy toán học: parser, số phức, thống kê, phương trình, ma trận, vectơ,
  * phân phối xác suất và hệ cơ số.
@@ -5787,9 +6155,6 @@ a { color: var(--amber); }
     nCr
   };
 });
-
-
-
   </script>
   <script>/* Dữ liệu tĩnh cho NIGSIO motkikiX Web Emulator */
 (function (root) {
@@ -6082,6 +6447,128 @@ a { color: var(--amber); }
     }
   ];
 
+  const elementRows = [
+    [1, "H", "Hydro", 1.008, "nonmetal", 1, 1],
+    [2, "He", "Heli", 4.0026, "noble", 1, 18],
+    [3, "Li", "Liti", 6.94, "alkali", 2, 1],
+    [4, "Be", "Beri", 9.0122, "alkaline", 2, 2],
+    [5, "B", "Bo", 10.81, "metalloid", 2, 13],
+    [6, "C", "Cacbon", 12.011, "nonmetal", 2, 14],
+    [7, "N", "Nitơ", 14.007, "nonmetal", 2, 15],
+    [8, "O", "Oxi", 15.999, "nonmetal", 2, 16],
+    [9, "F", "Flo", 18.998, "halogen", 2, 17],
+    [10, "Ne", "Neon", 20.18, "noble", 2, 18],
+    [11, "Na", "Natri", 22.99, "alkali", 3, 1],
+    [12, "Mg", "Magie", 24.305, "alkaline", 3, 2],
+    [13, "Al", "Nhôm", 26.982, "post", 3, 13],
+    [14, "Si", "Silic", 28.085, "metalloid", 3, 14],
+    [15, "P", "Photpho", 30.974, "nonmetal", 3, 15],
+    [16, "S", "Lưu huỳnh", 32.06, "nonmetal", 3, 16],
+    [17, "Cl", "Clo", 35.45, "halogen", 3, 17],
+    [18, "Ar", "Argon", 39.948, "noble", 3, 18],
+    [19, "K", "Kali", 39.098, "alkali", 4, 1],
+    [20, "Ca", "Canxi", 40.078, "alkaline", 4, 2],
+    [21, "Sc", "Scandi", 44.956, "transition", 4, 3],
+    [22, "Ti", "Titan", 47.867, "transition", 4, 4],
+    [23, "V", "Vanadi", 50.942, "transition", 4, 5],
+    [24, "Cr", "Crom", 51.996, "transition", 4, 6],
+    [25, "Mn", "Mangan", 54.938, "transition", 4, 7],
+    [26, "Fe", "Sắt", 55.845, "transition", 4, 8],
+    [27, "Co", "Coban", 58.933, "transition", 4, 9],
+    [28, "Ni", "Niken", 58.693, "transition", 4, 10],
+    [29, "Cu", "Đồng", 63.546, "transition", 4, 11],
+    [30, "Zn", "Kẽm", 65.38, "transition", 4, 12],
+    [31, "Ga", "Gali", 69.723, "post", 4, 13],
+    [32, "Ge", "Germani", 72.63, "metalloid", 4, 14],
+    [33, "As", "Asen", 74.922, "metalloid", 4, 15],
+    [34, "Se", "Selen", 78.971, "nonmetal", 4, 16],
+    [35, "Br", "Brom", 79.904, "halogen", 4, 17],
+    [36, "Kr", "Krypton", 83.798, "noble", 4, 18],
+    [37, "Rb", "Rubidi", 85.468, "alkali", 5, 1],
+    [38, "Sr", "Stronti", 87.62, "alkaline", 5, 2],
+    [39, "Y", "Ytri", 88.906, "transition", 5, 3],
+    [40, "Zr", "Zirconi", 91.224, "transition", 5, 4],
+    [41, "Nb", "Niobi", 92.906, "transition", 5, 5],
+    [42, "Mo", "Molypden", 95.95, "transition", 5, 6],
+    [43, "Tc", "Techneti", 98, "transition", 5, 7],
+    [44, "Ru", "Ruteni", 101.07, "transition", 5, 8],
+    [45, "Rh", "Rhodium", 102.91, "transition", 5, 9],
+    [46, "Pd", "Paladi", 106.42, "transition", 5, 10],
+    [47, "Ag", "Bạc", 107.87, "transition", 5, 11],
+    [48, "Cd", "Cadmi", 112.41, "transition", 5, 12],
+    [49, "In", "Indi", 114.82, "post", 5, 13],
+    [50, "Sn", "Thiếc", 118.71, "post", 5, 14],
+    [51, "Sb", "Antimon", 121.76, "metalloid", 5, 15],
+    [52, "Te", "Telua", 127.6, "metalloid", 5, 16],
+    [53, "I", "Iot", 126.9, "halogen", 5, 17],
+    [54, "Xe", "Xenon", 131.29, "noble", 5, 18],
+    [55, "Cs", "Xesi", 132.91, "alkali", 6, 1],
+    [56, "Ba", "Bari", 137.33, "alkaline", 6, 2],
+    [57, "La", "Lantan", 138.91, "lanthanide", 9, 3],
+    [58, "Ce", "Xeri", 140.12, "lanthanide", 9, 4],
+    [59, "Pr", "Praseodym", 140.91, "lanthanide", 9, 5],
+    [60, "Nd", "Neodym", 144.24, "lanthanide", 9, 6],
+    [61, "Pm", "Promethi", 145, "lanthanide", 9, 7],
+    [62, "Sm", "Samari", 150.36, "lanthanide", 9, 8],
+    [63, "Eu", "Europi", 151.96, "lanthanide", 9, 9],
+    [64, "Gd", "Gadolini", 157.25, "lanthanide", 9, 10],
+    [65, "Tb", "Terbi", 158.93, "lanthanide", 9, 11],
+    [66, "Dy", "Dysprosi", 162.5, "lanthanide", 9, 12],
+    [67, "Ho", "Holmi", 164.93, "lanthanide", 9, 13],
+    [68, "Er", "Erbi", 167.26, "lanthanide", 9, 14],
+    [69, "Tm", "Thuli", 168.93, "lanthanide", 9, 15],
+    [70, "Yb", "Ytterbi", 173.05, "lanthanide", 9, 16],
+    [71, "Lu", "Luteti", 174.97, "lanthanide", 9, 17],
+    [72, "Hf", "Hafni", 178.49, "transition", 6, 4],
+    [73, "Ta", "Tantal", 180.95, "transition", 6, 5],
+    [74, "W", "Wolfram", 183.84, "transition", 6, 6],
+    [75, "Re", "Rheni", 186.21, "transition", 6, 7],
+    [76, "Os", "Osmi", 190.23, "transition", 6, 8],
+    [77, "Ir", "Iridi", 192.22, "transition", 6, 9],
+    [78, "Pt", "Bạch kim", 195.08, "transition", 6, 10],
+    [79, "Au", "Vàng", 196.97, "transition", 6, 11],
+    [80, "Hg", "Thủy ngân", 200.59, "transition", 6, 12],
+    [81, "Tl", "Tali", 204.38, "post", 6, 13],
+    [82, "Pb", "Chì", 207.2, "post", 6, 14],
+    [83, "Bi", "Bismut", 208.98, "post", 6, 15],
+    [84, "Po", "Poloni", 209, "metalloid", 6, 16],
+    [85, "At", "Astatin", 210, "halogen", 6, 17],
+    [86, "Rn", "Radon", 222, "noble", 6, 18],
+    [87, "Fr", "Franxi", 223, "alkali", 7, 1],
+    [88, "Ra", "Radi", 226, "alkaline", 7, 2],
+    [89, "Ac", "Actini", 227, "actinide", 10, 3],
+    [90, "Th", "Thori", 232.04, "actinide", 10, 4],
+    [91, "Pa", "Protactini", 231.04, "actinide", 10, 5],
+    [92, "U", "Uran", 238.03, "actinide", 10, 6],
+    [93, "Np", "Neptuni", 237, "actinide", 10, 7],
+    [94, "Pu", "Plutoni", 244, "actinide", 10, 8],
+    [95, "Am", "Americi", 243, "actinide", 10, 9],
+    [96, "Cm", "Curi", 247, "actinide", 10, 10],
+    [97, "Bk", "Berkeli", 247, "actinide", 10, 11],
+    [98, "Cf", "Californi", 251, "actinide", 10, 12],
+    [99, "Es", "Einsteini", 252, "actinide", 10, 13],
+    [100, "Fm", "Fermium", 257, "actinide", 10, 14],
+    [101, "Md", "Mendelevi", 258, "actinide", 10, 15],
+    [102, "No", "Nobelium", 259, "actinide", 10, 16],
+    [103, "Lr", "Lawrenci", 262, "actinide", 10, 17],
+    [104, "Rf", "Rutherfordi", 267, "transition", 7, 4],
+    [105, "Db", "Dubni", 268, "transition", 7, 5],
+    [106, "Sg", "Seaborgi", 269, "transition", 7, 6],
+    [107, "Bh", "Bohri", 270, "transition", 7, 7],
+    [108, "Hs", "Hassi", 269, "transition", 7, 8],
+    [109, "Mt", "Meitneri", 278, "transition", 7, 9],
+    [110, "Ds", "Darmstadti", 281, "transition", 7, 10],
+    [111, "Rg", "Roentgeni", 282, "transition", 7, 11],
+    [112, "Cn", "Copernici", 285, "transition", 7, 12],
+    [113, "Nh", "Nihoni", 286, "post", 7, 13],
+    [114, "Fl", "Flerovi", 289, "post", 7, 14],
+    [115, "Mc", "Moscovi", 290, "post", 7, 15],
+    [116, "Lv", "Livermori", 293, "post", 7, 16],
+    [117, "Ts", "Tennessine", 294, "halogen", 7, 17],
+    [118, "Og", "Oganesson", 294, "noble", 7, 18]
+  ];
+  const elements = elementRows.map(([z, symbol, name, mass, category, period, group]) => ({ z, symbol, name, mass, category, period, group }));
+
   const tips = [
     "Nhấn SHIFT rồi phím tương ứng để dùng chức năng in màu vàng.",
     "Nhấn ALPHA để nhập biến A, B, C, D, E, F, X, Y, M hoặc Ans.",
@@ -6090,12 +6577,13 @@ a { color: var(--amber); }
     "Trong chế độ Cơ số N, dùng phím A–F trên dải màu xanh để nhập số hex.",
     "Ấn MENU để mở 12 chế độ; bấm ô MỞ RỘNG ở cuối menu để vào các công cụ nâng cao.",
     "Ví dụ tích phân: integral(x^2,0,3) cho kết quả 9.",
-    "Ví dụ thống kê: nhập dữ liệu, chọn mô hình hồi quy và bấm Tính."
+    "Ví dụ thống kê: nhập dữ liệu, chọn mô hình hồi quy và bấm Tính.",
+    "Mở công cụ Hóa học để tra bảng tuần hoàn, tính khối lượng mol và nhận diện kim loại.",
+    "Công cụ Tài chính có thêm NPV, IRR, WACC, thời gian hoàn vốn và chỉ số sinh lời."
   ];
 
-  root.CASIO_DATA = { modes, functionGroups, constants, conversions, tips };
-})(typeof globalThis !== "undefined" ? globalThis : this);
-</script>
+  root.CASIO_DATA = { modes, functionGroups, constants, conversions, tips, elements };
+})(typeof globalThis !== "undefined" ? globalThis : this);</script>
   <script>/*
  * NIGSIO motkikiX — Web Emulator
  * Giao diện, bàn phím, chế độ và các không gian làm việc.
@@ -6119,7 +6607,8 @@ a { color: var(--amber); }
     { id: "quickstats", name: "Thống kê nhanh", desc: "Dán một dãy số để nhận trung bình, trung vị, mốt, phương sai, độ lệch chuẩn và tứ phân vị.", icon: "table2" },
     { id: "number", name: "Số học", desc: "Phân tích thừa số, ước số, totient, GCD/LCM, modulo và nghịch đảo.", icon: "number" },
     { id: "units", name: "Đổi đơn vị", desc: "Quy đổi độ dài, khối lượng, diện tích, thể tích, tốc độ, năng lượng, áp suất, thời gian, dữ liệu và nhiệt độ.", icon: "convert" },
-    { id: "finance", name: "Tài chính", desc: "Lãi kép, tiết kiệm hằng tháng, khoản vay và tổng lãi phải trả.", icon: "finance" },
+    { id: "chemistry", name: "Hóa học", desc: "Bảng tuần hoàn 118 nguyên tố, tính khối lượng mol, thành phần % và nhận diện kim loại.", icon: "chemistry" },
+    { id: "finance", name: "Tài chính", desc: "Lãi kép, khoản vay, NPV, IRR, WACC, thời gian hoàn vốn và chỉ số sinh lời.", icon: "finance" },
     { id: "physics", name: "Vật lý", desc: "Công thức cơ học, điện học, sóng và nhiệt học với đơn vị SI.", icon: "physics" },
     { id: "series", name: "Tổng & tích", desc: "Tính tổng Sigma Σ và tích Pi ∏ của biểu thức theo biến x.", icon: "series" }
   ];
@@ -6701,6 +7190,7 @@ a { color: var(--amber); }
       inference: '<path d="M4 19V5M4 19h16"/><path d="M6 16c2 0 2.5-7 6-7s4 7 6 7"/><circle cx="12" cy="9" r="1.5"/><path d="M8 19v-2M16 19v-2"/>',
       number: '<path d="M4 9h16M4 15h16M8 4 6 20M18 4l-2 16"/>',
       finance: '<path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/><path d="M4 9 10 5l6 7 6-6"/>',
+      chemistry: '<path d="M9 3h6M10 3v5.1L5.6 16.8A3.2 3.2 0 0 0 8.5 21h7a3.2 3.2 0 0 0 2.9-4.2L14 8.1V3"/><path d="M7.8 14.5h8.4"/><circle cx="10.2" cy="17.3" r=".8"/><circle cx="13.9" cy="18.5" r=".55"/>',
       physics: '<circle cx="12" cy="12" r="2.2"/><ellipse cx="12" cy="12" rx="9" ry="3.6"/><ellipse cx="12" cy="12" rx="9" ry="3.6" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="3.6" transform="rotate(120 12 12)"/>',
       series: '<path d="M5 5h14L8 12l11 7H5"/><path d="M19 4v4M17 6h4"/>',
       extras: '<rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><path d="M17 13v6M14 16h6"/>'
@@ -6829,6 +7319,15 @@ a { color: var(--amber); }
     return renderExpressionRange(exp, pretty);
   }
 
+  function renderNaturalSlot(raw, pretty, extraClass) {
+    const content = String(raw == null ? "" : raw);
+    const plain = content.split(CARET).join("");
+    if (!plain.trim()) {
+      return `<span class="lcd-slot ${extraClass || ""}" aria-hidden="true">${content.includes(CARET) ? CARET_HTML : ""}</span>`;
+    }
+    return renderExpressionRange(content, pretty);
+  }
+
   function renderExpressionRange(raw, pretty) {
     let out = "";
     let i = 0;
@@ -6851,8 +7350,8 @@ a { color: var(--amber); }
         let close = findMatchingParen(raw, open);
         let inside = close === -1 ? raw.slice(open + 1) : raw.slice(open + 1, close);
         const parts = splitTopLevel(inside, ",");
-        const num = renderExpressionRange(parts[0] || "", pretty);
-        const den = renderExpressionRange(parts[1] || "", pretty);
+        const num = renderNaturalSlot(parts[0] || "", pretty, "lcd-slot-frac");
+        const den = renderNaturalSlot(parts[1] || "", pretty, "lcd-slot-frac");
         out += `<span class="lcd-fraction"><span class="frac-num">${num}</span><span class="frac-den">${den}</span></span>`;
         i = close === -1 ? raw.length : close + 1;
         continue;
@@ -6863,10 +7362,22 @@ a { color: var(--amber); }
         const close = findMatchingParen(raw, open);
         const inside = close === -1 ? raw.slice(open + 1) : raw.slice(open + 1, close);
         const parts = splitTopLevel(inside, ",");
-        const whole = renderExpressionRange(parts[0] || "", pretty);
-        const num = renderExpressionRange(parts[1] || "", pretty);
-        const den = renderExpressionRange(parts[2] || "", pretty);
+        const whole = renderNaturalSlot(parts[0] || "", pretty, "lcd-slot-whole");
+        const num = renderNaturalSlot(parts[1] || "", pretty, "lcd-slot-frac");
+        const den = renderNaturalSlot(parts[2] || "", pretty, "lcd-slot-frac");
         out += `<span class="lcd-mixed">${whole}<span class="lcd-fraction"><span class="frac-num">${num}</span><span class="frac-den">${den}</span></span></span>`;
+        i = close === -1 ? raw.length : close + 1;
+        continue;
+      }
+
+      if (pretty && raw.startsWith("deriv(", i)) {
+        const open = i + 5;
+        const close = findMatchingParen(raw, open);
+        const inside = close === -1 ? raw.slice(open + 1) : raw.slice(open + 1, close);
+        const parts = splitTopLevel(inside, ",");
+        const body = renderNaturalSlot(parts[0] || "", pretty, "lcd-deriv-slot");
+        const at = renderNaturalSlot(parts[1] || "", pretty, "lcd-deriv-slot");
+        out += `<span class="lcd-deriv" aria-label="đạo hàm"><span class="deriv-op"><span class="deriv-top">d</span><span class="deriv-bottom">dx</span></span><span class="deriv-body"><span class="deriv-paren">(</span>${body}<span class="deriv-paren">)</span></span><span class="deriv-at"><span class="deriv-bar"></span><span class="deriv-at-label">x=</span>${at}</span></span>`;
         i = close === -1 ? raw.length : close + 1;
         continue;
       }
@@ -7144,7 +7655,7 @@ a { color: var(--amber); }
     [
       K("optn", "OPTN", { cls: "key--dark key--label", shift: "CATALOG", alpha: "VARS", alphaAction: "recall" }),
       K("calc", "CALC", { cls: "key--dark key--label", shift: "SOLVE", shiftAction: "solve" }),
-      K("frac", '<span class="key-fraction"><span>□</span><span>□</span></span>', { cls: "key--dark", aria: "Phân số", shift: "MIXED", mainInsert: "frac(,)", mainCaret: 5, shiftInsert: "mixed(,,)", shiftCaret: 6 }),
+      K("frac", '<span class="key-fraction"><span>□</span><span>□</span></span>', { cls: "key--dark", aria: "Phân số", shift: "MIXED", mainAction: "fraction", shiftAction: "mixedFraction" }),
       K("xvar", "x", { cls: "key--dark key--letter", aria: "Biến x", shift: "y", mainInsert: "X", mainCaret: 1, shiftInsert: "Y", shiftCaret: 1 }),
       K("integral", "∫", { cls: "key--dark key--operator", aria: "Tích phân", shift: "d/dx", mainInsert: "integral(,0,1)", mainCaret: 9, shiftInsert: "deriv(,0)", shiftCaret: 6 })
     ],
@@ -7360,6 +7871,44 @@ a { color: var(--amber); }
     }
     const text = kind === "inverse" ? "^-1" : kind === "cube" ? "^3" : "^2";
     insertText(text, hasBase ? text.length : 0);
+  }
+
+  function insertFractionTemplate(kind) {
+    if (!state.powered || state.menuOpen) return;
+    if (state.mode === "basen") {
+      showToast("Chế độ Cơ số N không dùng phân số.", "is-error");
+      return;
+    }
+    if (state.result || state.error) {
+      if (state.justEvaluated) {
+        state.input = "";
+        state.cursor = 0;
+      }
+      state.result = null;
+      state.error = null;
+      state.justEvaluated = false;
+      state.historyCursor = -1;
+    }
+    const isMixed = kind === "mixed";
+    const pos = Math.max(0, Math.min(state.input.length, state.cursor));
+    const prefix = state.input.slice(0, pos);
+    const suffix = state.input.slice(pos);
+    const match = prefix.match(/(?:\d+(?:\.\d+)?|\.\d+)$/);
+    let moved = "";
+    let base = prefix;
+    if (match) {
+      const before = prefix.slice(0, match.index);
+      if (!/[A-Za-z_.]$/.test(before)) {
+        moved = match[0];
+        base = before;
+      }
+    }
+    const template = isMixed ? `mixed(${moved},,)` : `frac(${moved},)`;
+    const caretOffset = (isMixed ? 6 : 5) + moved.length + (moved ? 1 : 0);
+    state.input = base + template + suffix;
+    state.cursor = base.length + caretOffset;
+    vibrate();
+    renderScreen();
   }
 
   function deleteChar() {
@@ -7973,6 +8522,8 @@ a { color: var(--amber); }
       case "delete": deleteChar(); break;
       case "clear": clearAll(); break;
       case "equals": calculate(); break;
+      case "fraction": insertFractionTemplate("frac"); break;
+      case "mixedFraction": insertFractionTemplate("mixed"); break;
       case "toggleSD": toggleResultDisplay(); break;
       case "memAdd": memoryAdd(1); break;
       case "memSub": memoryAdd(-1); break;
@@ -11595,13 +12146,514 @@ a { color: var(--amber); }
   }
 
   /* ============================================================
+   * CÔNG CỤ MỞ RỘNG: HÓA HỌC
+   * ============================================================ */
+  const CHEM_ELEMENTS = D.elements || [];
+  const CHEM_BY_SYMBOL = new Map(CHEM_ELEMENTS.map((el) => [el.symbol, el]));
+  const CHEM_BY_Z = new Map(CHEM_ELEMENTS.map((el) => [el.z, el]));
+  const CHEM_METAL_CATEGORIES = new Set(["alkali", "alkaline", "transition", "post", "lanthanide", "actinide"]);
+  const CHEM_CATEGORY_LABELS = {
+    alkali: "Kim loại kiềm",
+    alkaline: "Kim loại kiềm thổ",
+    transition: "Kim loại chuyển tiếp",
+    post: "Kim loại sau chuyển tiếp",
+    metalloid: "Á kim",
+    nonmetal: "Phi kim",
+    halogen: "Halogen",
+    noble: "Khí hiếm",
+    lanthanide: "Họ lantan",
+    actinide: "Họ actini"
+  };
+  const CHEM_CATEGORY_ORDER = ["alkali", "alkaline", "transition", "post", "lanthanide", "actinide", "metalloid", "nonmetal", "halogen", "noble"];
+  const chemistryState = {
+    tab: "table",
+    selectedZ: 26,
+    query: "",
+    formula: "Fe2O3",
+    sampleMass: "",
+    method: "acid",
+    metalMass: "5.6",
+    gasVolume: "2.24",
+    oxideMass: "8",
+    metalPercent: "69.94",
+    valence: "auto"
+  };
+  let chemistryMetalResult = "";
+
+  function chemIsMetal(el) {
+    return !!el && CHEM_METAL_CATEGORIES.has(el.category);
+  }
+
+  function chemCategoryLabel(category) {
+    return CHEM_CATEGORY_LABELS[category] || "Chưa phân loại";
+  }
+
+  function chemNumber(value, label, options) {
+    let text = String(value == null ? "" : value).trim().replace(/\s+/g, "");
+    if (!text) throw new E.CalcError("Syntax ERROR", `${label} chưa được nhập`);
+    if (text.includes(",") && text.includes(".")) text = text.replace(/\./g, "").replace(",", ".");
+    else if (text.includes(",")) text = text.replace(",", ".");
+    const number = Number(text);
+    if (!Number.isFinite(number)) throw new E.CalcError("Syntax ERROR", `${label} không hợp lệ`);
+    if (options && options.positive && number <= 0) throw new E.CalcError("Math ERROR", `${label} phải lớn hơn 0`);
+    if (options && options.nonNegative && number < 0) throw new E.CalcError("Math ERROR", `${label} không được âm`);
+    return number;
+  }
+
+  function chemElement(z) {
+    return CHEM_BY_Z.get(Number(z)) || null;
+  }
+
+  function chemNumberText(value, digits) {
+    if (!Number.isFinite(value)) return "—";
+    const rounded = Number(value.toFixed(digits == null ? 4 : digits));
+    return formatNumericText(rounded);
+  }
+
+  function normalizeFormulaText(formula) {
+    const subscripts = { "₀": "0", "₁": "1", "₂": "2", "₃": "3", "₄": "4", "₅": "5", "₆": "6", "₇": "7", "₈": "8", "₉": "9" };
+    return String(formula || "")
+      .replace(/[₀₁₂₃₄₅₆₇₈₉]/g, (ch) => subscripts[ch])
+      .replace(/\s+/g, "")
+      .replace(/[·•*×]/g, ".")
+      .replace(/\[/g, "(")
+      .replace(/\]/g, ")");
+  }
+
+  function readChemCount(text, start) {
+    let j = start;
+    while (j < text.length && /[0-9.]/.test(text[j])) j++;
+    if (j === start) return { value: 1, next: start };
+    const raw = text.slice(start, j);
+    if (!/^\d+(?:\.\d+)?$/.test(raw)) throw new E.CalcError("Syntax ERROR", "Hệ số trong công thức không hợp lệ");
+    return { value: Number(raw), next: j };
+  }
+
+  function addChemCount(target, symbol, amount) {
+    target[symbol] = (target[symbol] || 0) + amount;
+  }
+
+  function parseChemGroup(text) {
+    const stack = [{}];
+    let i = 0;
+    while (i < text.length) {
+      const ch = text[i];
+      if (ch === "(") {
+        stack.push({});
+        i++;
+        continue;
+      }
+      if (ch === ")") {
+        if (stack.length === 1) throw new E.CalcError("Syntax ERROR", "Dấu ngoặc đóng không có cặp");
+        const group = stack.pop();
+        const count = readChemCount(text, i + 1);
+        if (!(count.value > 0)) throw new E.CalcError("Syntax ERROR", "Hệ số nhóm phải lớn hơn 0");
+        Object.keys(group).forEach((symbol) => addChemCount(stack[stack.length - 1], symbol, group[symbol] * count.value));
+        i = count.next;
+        continue;
+      }
+      if (ch === "." || ch === "+" || ch === "-" || ch === "=") {
+        throw new E.CalcError("Syntax ERROR", `Ký tự “${ch}” không hợp lệ trong công thức`);
+      }
+      const match = text.slice(i).match(/^[A-Z][a-z]?/);
+      if (!match) throw new E.CalcError("Syntax ERROR", `Không đọc được nguyên tố tại vị trí ${i + 1}`);
+      const symbol = match[0];
+      const element = CHEM_BY_SYMBOL.get(symbol);
+      if (!element) throw new E.CalcError("Syntax ERROR", `Không tìm thấy nguyên tố “${symbol}”`);
+      i += symbol.length;
+      const count = readChemCount(text, i);
+      if (!(count.value > 0)) throw new E.CalcError("Syntax ERROR", "Chỉ số nguyên tố phải lớn hơn 0");
+      addChemCount(stack[stack.length - 1], symbol, count.value);
+      i = count.next;
+    }
+    if (stack.length !== 1) throw new E.CalcError("Syntax ERROR", "Dấu ngoặc mở chưa được đóng");
+    if (!Object.keys(stack[0]).length) throw new E.CalcError("Syntax ERROR", "Công thức chưa có nguyên tố");
+    return stack[0];
+  }
+
+  function parseChemicalFormula(formula) {
+    const clean = normalizeFormulaText(formula);
+    if (!clean) throw new E.CalcError("Syntax ERROR", "Chưa nhập công thức hóa học");
+    if (clean.length > 180) throw new E.CalcError("Argument ERROR", "Công thức quá dài");
+    const components = clean.split(".");
+    if (components.some((part) => !part)) throw new E.CalcError("Syntax ERROR", "Công thức có dấu chấm không hợp lệ");
+    if (components.length > 16) throw new E.CalcError("Argument ERROR", "Công thức có quá nhiều phần");
+    const counts = {};
+    components.forEach((component) => {
+      let body = component;
+      let multiplier = 1;
+      const leading = body.match(/^(\d+(?:\.\d+)?)(?=[A-Z(])/);
+      if (leading) {
+        multiplier = Number(leading[1]);
+        body = body.slice(leading[1].length);
+        if (!(multiplier > 0)) throw new E.CalcError("Syntax ERROR", "Hệ số hydrate phải lớn hơn 0");
+      }
+      const part = parseChemGroup(body);
+      Object.keys(part).forEach((symbol) => addChemCount(counts, symbol, part[symbol] * multiplier));
+    });
+    let totalMass = 0;
+    const entries = Object.keys(counts).map((symbol) => {
+      const element = CHEM_BY_SYMBOL.get(symbol);
+      const amount = counts[symbol];
+      const mass = amount * element.mass;
+      totalMass += mass;
+      return { element, amount, mass };
+    }).sort((a, b) => b.mass - a.mass);
+    return { formula: clean, counts, entries, totalMass };
+  }
+
+  function chemCompositionMarkup(parsed, sampleMass) {
+    return `<div class="chem-table-wrap"><table class="chem-table">
+      <thead><tr><th>Nguyên tố</th><th>Số nguyên tử</th><th>Khối lượng (g/mol)</th><th>% khối lượng</th>${sampleMass > 0 ? "<th>Trong mẫu (g)</th>" : ""}</tr></thead>
+      <tbody>${parsed.entries.map((item) => {
+        const percent = parsed.totalMass ? item.mass / parsed.totalMass * 100 : 0;
+        return `<tr>
+          <td><span class="chem-mini-symbol cat-${item.element.category}">${escapeHtml(item.element.symbol)}</span><span>${escapeHtml(item.element.name)}</span></td>
+          <td>${formatNumericText(item.amount)}</td>
+          <td>${chemNumberText(item.mass, 5)}</td>
+          <td>${Number(percent.toFixed(3))}%</td>
+          ${sampleMass > 0 ? `<td>${chemNumberText(item.mass / parsed.totalMass * sampleMass, 5)}</td>` : ""}
+        </tr>`;
+      }).join("")}</tbody>
+    </table></div>`;
+  }
+
+  function chemMetalFormulaMarkup(parsed) {
+    const metals = parsed.entries.filter((item) => chemIsMetal(item.element));
+    if (!metals.length) {
+      return `<div class="notice chem-note"><span class="notice-icon">i</span><span>Công thức <b>${escapeHtml(parsed.formula)}</b> không chứa kim loại.</span></div>`;
+    }
+    return `<div class="chem-metal-list">${metals.map((item) => {
+      const el = item.element;
+      const percent = parsed.totalMass ? item.mass / parsed.totalMass * 100 : 0;
+      return `<div class="chem-metal-card">
+        <span class="chem-metal-symbol cat-${el.category}">${escapeHtml(el.symbol)}</span>
+        <div class="chem-metal-copy">
+          <span class="chem-metal-kicker">KIM LOẠI TRONG CÔNG THỨC · Z = ${el.z}</span>
+          <strong>${escapeHtml(el.name)} (${escapeHtml(el.symbol)})</strong>
+          <small>${chemCategoryLabel(el.category)} · ${chemNumberText(el.mass, 4)} g/mol · ${Number(percent.toFixed(3))}% khối lượng</small>
+        </div>
+      </div>`;
+    }).join("")}</div>`;
+  }
+
+  function chemFormulaResultMarkup() {
+    try {
+      const parsed = parseChemicalFormula(chemistryState.formula);
+      let sampleMass = 0;
+      if (String(chemistryState.sampleMass).trim()) sampleMass = chemNumber(chemistryState.sampleMass, "Khối lượng mẫu", { positive: true });
+      const moles = sampleMass > 0 ? sampleMass / parsed.totalMass : null;
+      return card(
+        `KHỐI LƯỢNG MOL · ${parsed.formula.toUpperCase()}`,
+        `${chemNumberText(parsed.totalMass, 5)}<span class="chem-unit">g/mol</span>`,
+        `${parsed.entries.length} nguyên tố · ${formatNumericText(parsed.entries.reduce((sum, item) => sum + item.amount, 0))} nguyên tử trong một phân tử`
+      ) + chemMetalFormulaMarkup(parsed) +
+        (sampleMass > 0 ? `<div class="metric-grid chem-metrics">${metric("Khối lượng mẫu", `${chemNumberText(sampleMass, 4)} g`)}${metric("Số mol", `${chemNumberText(moles, 6)} mol`, true)}${metric("Số phân tử", `${formatNumericText(moles * 6.02214076e23)}`)}</div>` : "") +
+        chemCompositionMarkup(parsed, sampleMass) +
+        `<div class="field-hint">Công thức hỗ trợ ngoặc, chỉ số và hydrate, ví dụ <b>Ca(OH)2</b>, <b>Al2(SO4)3</b>, <b>CuSO4.5H2O</b>. Khối lượng nguyên tử lấy theo bảng tuần hoàn tích hợp.</div>`;
+    } catch (error) {
+      return errorBox(error);
+    }
+  }
+
+  function chemElementDetailMarkup(z) {
+    const el = chemElement(z) || CHEM_BY_SYMBOL.get("Fe");
+    if (!el) return "";
+    const category = chemCategoryLabel(el.category);
+    const block = el.period === 9 ? "Họ lantan (f-block)" : el.period === 10 ? "Họ actini (f-block)" : `Nhóm ${el.group} · Chu kỳ ${el.period}`;
+    return `<div class="chem-detail">
+      <div class="chem-detail-symbol cat-${el.category}"><span>${el.z}</span><strong>${escapeHtml(el.symbol)}</strong></div>
+      <div class="chem-detail-copy">
+        <span class="chem-detail-kicker">${block} · ${escapeHtml(category)}</span>
+        <h3>${escapeHtml(el.name)}</h3>
+        <div class="chem-detail-stats">
+          <span><b>${chemNumberText(el.mass, 4)}</b><small>khối lượng nguyên tử</small></span>
+          <span><b>${el.z}</b><small>số hiệu nguyên tử</small></span>
+          <span><b>${chemIsMetal(el) ? "Kim loại" : "Phi kim"}</b><small>phân loại</small></span>
+        </div>
+        <p>${chemIsMetal(el) ? `${escapeHtml(el.name)} là ${category.toLowerCase()}, thường xuất hiện trong oxit, muối và hợp kim.` : `${escapeHtml(el.name)} thuộc nhóm ${category.toLowerCase()}.`}</p>
+      </div>
+    </div>`;
+  }
+
+  function chemElementGridMarkup() {
+    return `<div class="periodic-scroll"><div class="periodic-table">
+      ${CHEM_ELEMENTS.map((el) => `<button class="element-cell cat-${el.category} ${el.z === chemistryState.selectedZ ? "is-active" : ""}" type="button" data-chem-element="${el.z}" style="grid-column:${el.group};grid-row:${el.period}" title="${el.z} · ${escapeHtml(el.name)} (${escapeHtml(el.symbol)}) · ${chemNumberText(el.mass, 4)}" aria-label="Nguyên tố ${el.z}, ${escapeHtml(el.name)}, ký hiệu ${escapeHtml(el.symbol)}">
+        <span class="element-z">${el.z}</span>
+        <span class="element-symbol">${escapeHtml(el.symbol)}</span>
+      </button>`).join("")}
+      <span class="f-block-marker" style="grid-column:3;grid-row:6">57–71</span>
+      <span class="f-block-marker" style="grid-column:3;grid-row:7">89–103</span>
+    </div></div>`;
+  }
+
+  function chemTableLegendMarkup() {
+    return `<div class="periodic-legend">${CHEM_CATEGORY_ORDER.map((category) => `<span class="legend-item"><i class="cat-dot cat-${category}"></i>${CHEM_CATEGORY_LABELS[category]}</span>`).join("")}</div>`;
+  }
+
+  function chemSearchMarkup(query) {
+    const q = String(query || "").trim().toLowerCase();
+    if (!q) return "";
+    const matches = CHEM_ELEMENTS.filter((el) => String(el.z) === q || el.symbol.toLowerCase() === q || el.name.toLowerCase().includes(q) || el.symbol.toLowerCase().includes(q)).slice(0, 8);
+    if (!matches.length) return `<div class="chem-search-empty">Không tìm thấy nguyên tố phù hợp.</div>`;
+    return `<div class="chem-search-results">${matches.map((el) => `<button type="button" data-chem-search-z="${el.z}" class="chem-search-chip cat-${el.category}"><b>${escapeHtml(el.symbol)}</b><span>${escapeHtml(el.name)}</span><small>Z=${el.z}</small></button>`).join("")}</div>`;
+  }
+
+  function chemistryTableTabMarkup() {
+    return workspaceLead("Tra cứu <strong>118 nguyên tố hóa học</strong>: khối lượng nguyên tử, phân loại, chu kỳ và nhóm. Bấm một ô để xem chi tiết.") +
+      `<div class="chem-search-row"><input type="search" id="chemSearchInput" placeholder="Tìm nguyên tố: Fe, Sắt, 26…" value="${escapeHtml(chemistryState.query)}" autocomplete="off"><span class="tiny-label">Bảng tuần hoàn đầy đủ</span></div>
+      <div id="chemSearchResults">${chemSearchMarkup(chemistryState.query)}</div>
+      ${chemElementGridMarkup()}
+      ${chemTableLegendMarkup()}
+      <div id="chemElementDetail">${chemElementDetailMarkup(chemistryState.selectedZ)}</div>`;
+  }
+
+  function chemistryFormulaTabMarkup() {
+    return workspaceLead("Nhập công thức để tính <strong>khối lượng mol</strong>, thành phần phần trăm và nhận diện kim loại có trong hợp chất.") +
+      `<div class="form-grid chem-formula-form">
+        <div class="field field-wide"><label>Công thức hóa học</label><input id="chemFormulaInput" value="${escapeHtml(chemistryState.formula)}" placeholder="Fe2O3, Ca(OH)2, CuSO4.5H2O…" autocomplete="off"></div>
+        <div class="field"><label>Khối lượng mẫu (g) <span class="sub">không bắt buộc</span></label><input id="chemSampleMass" value="${escapeHtml(chemistryState.sampleMass)}" inputmode="decimal" autocomplete="off"></div>
+      </div>
+      <div class="chem-samples"><span class="tiny-label">Ví dụ nhanh</span>${["Fe2O3", "Ca(OH)2", "Al2(SO4)3", "CuSO4.5H2O", "CH3COOH"].map((formula) => `<button type="button" data-chem-sample="${formula}">${formula}</button>`).join("")}</div>
+      <div id="chemFormulaResults" class="chem-formula-results">${chemFormulaResultMarkup()}</div>`;
+  }
+
+  function chemistryMetalFormMarkup() {
+    const valenceOptions = [["auto", "Tự động (I–III)"], ["1", "Hóa trị I"], ["2", "Hóa trị II"], ["3", "Hóa trị III"]].map(([value, label]) => `<option value="${value}" ${chemistryState.valence === value ? "selected" : ""}>${label}</option>`).join("");
+    const method = ["acid", "oxide", "percent"].includes(chemistryState.method) ? chemistryState.method : "acid";
+    let fields = "";
+    let hint = "";
+    if (method === "oxide") {
+      fields = `<div class="field"><label>Khối lượng kim loại (g)</label><input data-chem-metal="metalMass" value="${escapeHtml(chemistryState.metalMass)}" inputmode="decimal"></div>
+        <div class="field"><label>Khối lượng oxit (g)</label><input data-chem-metal="oxideMass" value="${escapeHtml(chemistryState.oxideMass)}" inputmode="decimal"></div>`;
+      hint = "Oxit dạng M₂Oₙ: khối lượng oxi = khối lượng oxit − khối lượng kim loại.";
+    } else if (method === "percent") {
+      fields = `<div class="field"><label>% khối lượng kim loại trong oxit</label><input data-chem-metal="metalPercent" value="${escapeHtml(chemistryState.metalPercent)}" inputmode="decimal"></div>`;
+      hint = "Dùng cho oxit dạng M₂Oₙ; hệ thống thử các hóa trị I, II, III để tìm kim loại phù hợp.";
+    } else {
+      fields = `<div class="field"><label>Khối lượng kim loại (g)</label><input data-chem-metal="metalMass" value="${escapeHtml(chemistryState.metalMass)}" inputmode="decimal"></div>
+        <div class="field"><label>Thể tích H₂ (lít, đktc)</label><input data-chem-metal="gasVolume" value="${escapeHtml(chemistryState.gasVolume)}" inputmode="decimal"></div>`;
+      hint = "Phản ứng M + nHCl → MClₙ + n/2 H₂. Hệ thống thử hóa trị I, II, III nếu chọn tự động.";
+    }
+    return `<div class="segmented chem-methods">
+        <button class="seg-btn ${method === "acid" ? "is-active" : ""}" type="button" data-chem-method="acid">Kim loại + axit</button>
+        <button class="seg-btn ${method === "oxide" ? "is-active" : ""}" type="button" data-chem-method="oxide">Kim loại + oxi</button>
+        <button class="seg-btn ${method === "percent" ? "is-active" : ""}" type="button" data-chem-method="percent">% trong oxit</button>
+      </div>
+      <div class="form-grid three chem-metal-form">${fields}
+        <div class="field"><label>Hóa trị</label><select id="chemValence">${valenceOptions}</select></div>
+      </div>
+      <div class="field-hint">${hint}</div>
+      <div class="button-row"><button class="btn primary" type="button" id="chemMetalRun">Nhận diện kim loại</button><button class="btn ghost small" type="button" id="chemMetalSample">Dùng ví dụ</button></div>
+      <div id="chemMetalResults" class="chem-metal-results">${chemistryMetalResult}</div>`;
+  }
+
+  function chemistryMetalTabMarkup() {
+    return workspaceLead("Từ khối lượng kim loại và thể tích khí H₂ hoặc khối lượng oxit, xác định <strong>kim loại cần tìm</strong> dựa trên bảng khối lượng nguyên tử.") +
+      chemistryMetalFormMarkup();
+  }
+
+  function chemMetalCandidates(method, values, valenceMode) {
+    const valences = valenceMode === "auto" ? [1, 2, 3] : [Number(valenceMode)];
+    let targetMass = 0;
+    const computed = [];
+    valences.forEach((n) => {
+      let mass = 0;
+      if (method === "acid") mass = values.metalMass * n * 22.4 / (2 * values.gasVolume);
+      else if (method === "oxide") mass = values.metalMass * n * 8 / (values.oxideMass - values.metalMass);
+      else mass = 8 * n * values.metalPercent / (100 - values.metalPercent);
+      computed.push({ n, mass });
+    });
+    const candidates = [];
+    computed.forEach((item) => {
+      if (!Number.isFinite(item.mass) || item.mass <= 0) return;
+      CHEM_ELEMENTS.filter((el) => chemIsMetal(el) && el.z <= 92 && el.mass <= 245).forEach((el) => {
+        const delta = Math.abs(el.mass - item.mass);
+        const tolerance = Math.max(0.55, item.mass * 0.018);
+        if (delta <= tolerance) candidates.push({ el, n: item.n, mass: item.mass, delta });
+      });
+    });
+    const bestByElement = new Map();
+    candidates.sort((a, b) => a.delta - b.delta).forEach((candidate) => {
+      if (!bestByElement.has(candidate.el.z)) bestByElement.set(candidate.el.z, candidate);
+    });
+    return { computed, candidates: Array.from(bestByElement.values()).sort((a, b) => a.delta - b.delta).slice(0, 4) };
+  }
+
+  function chemMetalResultMarkup(result) {
+    if (!result) return "";
+    if (!result.candidates.length) {
+      return `<div class="notice error"><span class="notice-icon">!</span><span><b>Chưa khớp kim loại</b> — Khối lượng mol tính được: ${result.computed.map((item) => `n=${item.n}: ${chemNumberText(item.mass, 3)}`).join(" · ")}. Hãy kiểm tra số liệu hoặc chọn đúng hóa trị.</span></div>`;
+    }
+    const best = result.candidates[0];
+    return card("KIM LOẠI CẦN TÌM", `${escapeHtml(best.el.symbol)}<span class="chem-best-name">${escapeHtml(best.el.name)}</span>`, `${chemCategoryLabel(best.el.category)} · hóa trị ${best.n} · M ≈ ${chemNumberText(best.mass, 3)} g/mol`) +
+      `<div class="chem-candidate-list">${result.candidates.map((item, index) => `<button class="chem-candidate ${index === 0 ? "is-best" : ""}" type="button" data-chem-candidate="${item.el.z}">
+        <span class="chem-candidate-symbol cat-${item.el.category}">${escapeHtml(item.el.symbol)}</span>
+        <span><strong>${escapeHtml(item.el.name)}</strong><small>M = ${chemNumberText(item.el.mass, 4)} · hóa trị ${item.n} · lệch ${chemNumberText(item.delta, 3)}</small></span>
+        ${index === 0 ? '<em>gần nhất</em>' : ""}
+      </button>`).join("")}</div>
+      <div class="field-hint">Kết quả dựa trên khối lượng nguyên tử trung bình và giả thiết phản ứng hoàn toàn. Nếu có nhiều kim loại cùng khối lượng mol gần nhau, hãy đối chiếu thêm tính chất hóa học.</div>`;
+  }
+
+  function updateChemFormula(root) {
+    const target = $("#chemFormulaResults", root);
+    if (target) target.innerHTML = chemFormulaResultMarkup();
+  }
+
+  function updateChemSelection(root, z) {
+    chemistryState.selectedZ = Number(z);
+    $$("[data-chem-element]", root).forEach((button) => button.classList.toggle("is-active", Number(button.dataset.chemElement) === chemistryState.selectedZ));
+    const detail = $("#chemElementDetail", root);
+    if (detail) detail.innerHTML = chemElementDetailMarkup(chemistryState.selectedZ);
+  }
+
+  function updateChemSearch(root) {
+    const target = $("#chemSearchResults", root);
+    if (target) target.innerHTML = chemSearchMarkup(chemistryState.query);
+    $$("[data-chem-search-z]", root).forEach((button) => {
+      button.addEventListener("click", () => {
+        updateChemSelection(root, button.dataset.chemSearchZ);
+        chemistryState.query = "";
+        const input = $("#chemSearchInput", root);
+        if (input) input.value = "";
+        updateChemSearch(root);
+      });
+    });
+  }
+
+  function runChemMetal(root) {
+    const method = chemistryState.method;
+    try {
+      let values;
+      if (method === "acid") {
+        values = {
+          metalMass: chemNumber(chemistryState.metalMass, "Khối lượng kim loại", { positive: true }),
+          gasVolume: chemNumber(chemistryState.gasVolume, "Thể tích H₂", { positive: true })
+        };
+      } else if (method === "oxide") {
+        values = {
+          metalMass: chemNumber(chemistryState.metalMass, "Khối lượng kim loại", { positive: true }),
+          oxideMass: chemNumber(chemistryState.oxideMass, "Khối lượng oxit", { positive: true })
+        };
+        if (values.oxideMass <= values.metalMass) throw new E.CalcError("Math ERROR", "Khối lượng oxit phải lớn hơn khối lượng kim loại");
+      } else {
+        values = {
+          metalPercent: chemNumber(chemistryState.metalPercent, "% kim loại", { positive: true })
+        };
+        if (values.metalPercent >= 100) throw new E.CalcError("Math ERROR", "% kim loại phải nhỏ hơn 100");
+      }
+      const result = chemMetalCandidates(method, values, chemistryState.valence);
+      chemistryMetalResult = chemMetalResultMarkup(result);
+      const target = $("#chemMetalResults", root);
+      if (target) target.innerHTML = chemistryMetalResult;
+      $$("[data-chem-candidate]", root).forEach((button) => {
+        button.addEventListener("click", () => {
+          chemistryState.selectedZ = Number(button.dataset.chemCandidate);
+          openChemistryWorkspace("table");
+        });
+      });
+    } catch (error) {
+      chemistryMetalResult = errorBox(error);
+      const target = $("#chemMetalResults", root);
+      if (target) target.innerHTML = chemistryMetalResult;
+    }
+  }
+
+  function openChemistryWorkspace(tab) {
+    closeModal();
+    if (tab) chemistryState.tab = tab;
+    if (!["table", "formula", "metal"].includes(chemistryState.tab)) chemistryState.tab = "table";
+    const tabs = [["table", "Bảng tuần hoàn"], ["formula", "Công thức & khối lượng"], ["metal", "Nhận diện kim loại"]];
+    const body = `<div class="segmented chem-tabs">${tabs.map(([id, label]) => `<button class="seg-btn ${chemistryState.tab === id ? "is-active" : ""}" type="button" data-chem-tab="${id}">${label}</button>`).join("")}</div>
+      <div id="chemTabContent">${chemistryState.tab === "table" ? chemistryTableTabMarkup() : chemistryState.tab === "formula" ? chemistryFormulaTabMarkup() : chemistryMetalTabMarkup()}</div>
+      <div class="button-row between">
+        <span class="tiny-label">Bảng tuần hoàn và khối lượng nguyên tử dùng cho học tập, tính toán định lượng cơ bản.</span>
+        <button class="btn ghost small" type="button" data-close-modal>Đóng</button>
+      </div>`;
+    openModal({
+      title: "Hóa học",
+      kicker: "CHEMISTRY LAB · NGUYÊN TỐ & KIM LOẠI",
+      icon: "chemistry",
+      wide: true,
+      body,
+      onMount(root) {
+        $$("[data-chem-tab]", root).forEach((button) => {
+          button.addEventListener("click", () => openChemistryWorkspace(button.dataset.chemTab));
+        });
+        $$("[data-chem-element]", root).forEach((button) => {
+          button.addEventListener("click", () => updateChemSelection(root, button.dataset.chemElement));
+        });
+        const search = $("#chemSearchInput", root);
+        if (search) {
+          search.addEventListener("input", () => {
+            chemistryState.query = search.value;
+            updateChemSearch(root);
+          });
+        }
+        updateChemSearch(root);
+        $$("[data-chem-sample]", root).forEach((button) => {
+          button.addEventListener("click", () => {
+            chemistryState.formula = button.dataset.chemSample;
+            const input = $("#chemFormulaInput", root);
+            if (input) input.value = chemistryState.formula;
+            updateChemFormula(root);
+          });
+        });
+        const formulaInput = $("#chemFormulaInput", root);
+        if (formulaInput) formulaInput.addEventListener("input", () => {
+          chemistryState.formula = formulaInput.value;
+          updateChemFormula(root);
+        });
+        const sampleInput = $("#chemSampleMass", root);
+        if (sampleInput) sampleInput.addEventListener("input", () => {
+          chemistryState.sampleMass = sampleInput.value;
+          updateChemFormula(root);
+        });
+        $$("[data-chem-method]", root).forEach((button) => {
+          button.addEventListener("click", () => {
+            chemistryState.method = button.dataset.chemMethod;
+            chemistryMetalResult = "";
+            openChemistryWorkspace("metal");
+          });
+        });
+        $$("[data-chem-metal]", root).forEach((input) => {
+          input.addEventListener("input", () => {
+            chemistryState[input.dataset.chemMetal] = input.value;
+          });
+        });
+        const valence = $("#chemValence", root);
+        if (valence) valence.addEventListener("change", () => { chemistryState.valence = valence.value; });
+        const run = $("#chemMetalRun", root);
+        if (run) run.addEventListener("click", () => runChemMetal(root));
+        const sample = $("#chemMetalSample", root);
+        if (sample) sample.addEventListener("click", () => {
+          if (chemistryState.method === "oxide") Object.assign(chemistryState, { metalMass: "5.6", oxideMass: "8" });
+          else if (chemistryState.method === "percent") Object.assign(chemistryState, { metalPercent: "69.94" });
+          else Object.assign(chemistryState, { metalMass: "5.6", gasVolume: "2.24" });
+          chemistryMetalResult = "";
+          openChemistryWorkspace("metal");
+        });
+        $$("[data-chem-candidate]", root).forEach((button) => {
+          button.addEventListener("click", () => {
+            chemistryState.selectedZ = Number(button.dataset.chemCandidate);
+            openChemistryWorkspace("table");
+          });
+        });
+      }
+    });
+  }
+
+  /* ============================================================
    * CÔNG CỤ MỞ RỘNG: TÀI CHÍNH
    * ============================================================ */
   const financeState = {
     tab: "compound",
     principal: "100000000", rate: "7", years: "10", periods: "12",
     initial: "50000000", monthly: "5000000", savingsRate: "6", savingsYears: "10",
-    loan: "500000000", loanRate: "9", loanYears: "5", loanPeriods: "12"
+    loan: "500000000", loanRate: "9", loanYears: "5", loanPeriods: "12",
+    npvRate: "10", cashFlows: "-1200, 350, 400, 450, 500",
+    waccEquity: "60000000000", waccDebt: "40000000000", waccPreferred: "0",
+    waccCostEquity: "14", waccCostDebt: "8", waccCostPreferred: "10", waccTax: "20"
   };
   let moneyFormatter = null;
   try { moneyFormatter = new Intl.NumberFormat("vi-VN", { maximumFractionDigits: 0 }); } catch (error) { moneyFormatter = null; }
@@ -11623,8 +12675,129 @@ a { color: var(--amber); }
     return number;
   }
 
+  function parseCashFlows(text) {
+    const parts = String(text || "").split(/[\s,;]+/).filter(Boolean);
+    if (parts.length < 2) throw { code: "Argument ERROR", detail: "Cần ít nhất 2 dòng tiền (dòng tiền ban đầu và các kỳ tiếp theo)." };
+    if (parts.length > 200) throw { code: "Argument ERROR", detail: "Tối đa 200 dòng tiền." };
+    return parts.map((part, index) => financeNumber(part, `Dòng tiền thứ ${index + 1}`));
+  }
+
+  function npvAtRate(cashFlows, rate) {
+    let value = 0;
+    for (let t = 0; t < cashFlows.length; t++) value += cashFlows[t] / Math.pow(1 + rate, t);
+    return value;
+  }
+
+  function findIrr(cashFlows) {
+    const hasPositive = cashFlows.some((value) => value > 0);
+    const hasNegative = cashFlows.some((value) => value < 0);
+    if (!hasPositive || !hasNegative) return null;
+    const f = (rate) => npvAtRate(cashFlows, rate);
+    let previousRate = -0.9999;
+    let previousValue = f(previousRate);
+    for (let i = 1; i <= 800; i++) {
+      const rate = -0.9999 + (i * (20.9999 / 800));
+      const value = f(rate);
+      if (Number.isFinite(previousValue) && Number.isFinite(value) && previousValue * value <= 0) {
+        let lo = previousRate;
+        let hi = rate;
+        let flo = previousValue;
+        for (let j = 0; j < 120; j++) {
+          const mid = (lo + hi) / 2;
+          const fm = f(mid);
+          if (Math.abs(fm) < 1e-9) return mid;
+          if (flo * fm <= 0) hi = mid;
+          else { lo = mid; flo = fm; }
+        }
+        return (lo + hi) / 2;
+      }
+      previousRate = rate;
+      previousValue = value;
+    }
+    return null;
+  }
+
+  function paybackPeriod(cashFlows, rate) {
+    let cumulative = 0;
+    for (let t = 0; t < cashFlows.length; t++) {
+      const flow = rate == null ? cashFlows[t] : cashFlows[t] / Math.pow(1 + rate, t);
+      const previous = cumulative;
+      cumulative += flow;
+      if (previous < 0 && cumulative >= 0) {
+        if (Math.abs(flow) < 1e-12) return t;
+        return (t - 1) + (-previous / flow);
+      }
+    }
+    return null;
+  }
+
+  function financePercent(value) {
+    if (value == null || !Number.isFinite(value)) return "—";
+    return `${Number((value * 100).toFixed(2))}%`;
+  }
+
+  function financeRatio(value) {
+    if (value == null || !Number.isFinite(value)) return "—";
+    return Number(value.toFixed(3)).toLocaleString("vi-VN");
+  }
+
   function financeResultMarkup() {
     try {
+      if (financeState.tab === "npv") {
+        const rate = financeNumber(financeState.npvRate, "Lãi suất chiết khấu", { nonNegative: true }) / 100;
+        const cashFlows = parseCashFlows(financeState.cashFlows);
+        const initial = -Math.min(0, ...cashFlows);
+        if (initial <= 0) throw { code: "Argument ERROR", detail: "Cần có dòng tiền ban đầu âm (vốn đầu tư)." };
+        const npv = npvAtRate(cashFlows, rate);
+        const irr = findIrr(cashFlows);
+        const pvFuture = cashFlows.slice(1).reduce((sum, value, index) => sum + value / Math.pow(1 + rate, index + 1), 0);
+        const pi = pvFuture / initial;
+        const payback = paybackPeriod(cashFlows);
+        const discountedPayback = paybackPeriod(cashFlows, rate);
+        const pvNegative = cashFlows.reduce((sum, value, index) => sum + (value < 0 ? value / Math.pow(1 + rate, index) : 0), 0);
+        const fvPositive = cashFlows.reduce((sum, value, index) => sum + (value > 0 ? value * Math.pow(1 + rate, cashFlows.length - 1 - index) : 0), 0);
+        const mirr = pvNegative < 0 && fvPositive > 0 ? Math.pow(fvPositive / -pvNegative, 1 / (cashFlows.length - 1)) - 1 : null;
+        return card("GIÁ TRỊ HIỆN TẠI RÒNG · NPV", `${formatMoney(npv * 1000000)}`, `${cashFlows.length - 1} kỳ · chiết khấu ${financeState.npvRate}%/năm · đơn vị triệu ₫`) +
+          `<div class="metric-grid">
+            ${metric("NPV", `${formatMoney(npv * 1000000)}`, true)}
+            ${metric("IRR", financePercent(irr), true)}
+            ${metric("Chỉ số sinh lời PI", financeRatio(pi), true)}
+            ${metric("Hoàn vốn", payback == null ? "—" : `${Number(payback.toFixed(2))} năm`)}
+            ${metric("Hoàn vốn có chiết khấu", discountedPayback == null ? "—" : `${Number(discountedPayback.toFixed(2))} năm`)}
+            ${metric("MIRR", financePercent(mirr))}
+            ${metric("Tổng dòng tiền", formatMoney(cashFlows.reduce((a, b) => a + b, 0) * 1000000))}
+            ${metric("Vốn đầu tư", formatMoney(initial * 1000000))}
+          </div>
+          <div class="field-hint">Dòng tiền nhập theo <b>triệu đồng</b>, cách nhau bằng dấu phẩy hoặc xuống dòng. Dòng đầu tiên là vốn đầu tư (số âm). NPV &gt; 0 và PI &gt; 1 thường được xem là phương án có lợi.</div>`;
+      }
+      if (financeState.tab === "wacc") {
+        const equity = financeNumber(financeState.waccEquity, "Vốn chủ sở hữu", { nonNegative: true });
+        const debt = financeNumber(financeState.waccDebt, "Nợ vay", { nonNegative: true });
+        const preferred = financeNumber(financeState.waccPreferred, "Vốn cổ phần ưu đãi", { nonNegative: true });
+        const total = equity + debt + preferred;
+        if (total <= 0) throw { code: "Argument ERROR", detail: "Tổng vốn phải lớn hơn 0." };
+        const re = financeNumber(financeState.waccCostEquity, "Chi phí vốn chủ sở hữu", { nonNegative: true }) / 100;
+        const rd = financeNumber(financeState.waccCostDebt, "Chi phí nợ vay", { nonNegative: true }) / 100;
+        const rp = financeNumber(financeState.waccCostPreferred, "Chi phí vốn ưu đãi", { nonNegative: true }) / 100;
+        const tax = financeNumber(financeState.waccTax, "Thuế suất", { nonNegative: true }) / 100;
+        if (tax > 1) throw { code: "Argument ERROR", detail: "Thuế suất phải từ 0% đến 100%." };
+        const we = equity / total;
+        const wd = debt / total;
+        const wp = preferred / total;
+        const wacc = we * re + wp * rp + wd * rd * (1 - tax);
+        return card("WACC · CHI PHÍ VỐN BÌNH QUÂN GIA QUYỀN", financePercent(wacc), `Tổng vốn ${formatMoney(total)} · thuế ${financeState.waccTax}%`) +
+          `<div class="metric-grid">
+            ${metric("WACC", financePercent(wacc), true)}
+            ${metric("Tỷ trọng vốn chủ", financePercent(we))}
+            ${metric("Tỷ trọng nợ", financePercent(wd))}
+            ${metric("Tỷ trọng ưu đãi", financePercent(wp))}
+            ${metric("Chi phí nợ sau thuế", financePercent(rd * (1 - tax)), true)}
+            ${metric("Chi phí vốn chủ", financePercent(re))}
+            ${metric("Chi phí ưu đãi", financePercent(rp))}
+            ${metric("Tổng vốn", formatMoney(total))}
+          </div>
+          <div class="field-hint">WACC = (E/V)·Re + (P/V)·Rp + (D/V)·Rd·(1 − Tc). Có thể dùng WACC làm tỷ lệ chiết khấu cho NPV.</div>`;
+      }
       if (financeState.tab === "loan") {
         const principal = financeNumber(financeState.loan, "Số tiền vay", { positive: true });
         const annual = financeNumber(financeState.loanRate, "Lãi suất năm", { nonNegative: true }) / 100;
@@ -11691,6 +12864,25 @@ a { color: var(--amber); }
   }
 
   function financeFormMarkup() {
+    if (financeState.tab === "npv") {
+      return `<div class="form-grid">
+          <div class="field"><label>Lãi suất chiết khấu (%)</label><input data-fin="npvRate" value="${escapeHtml(financeState.npvRate)}" inputmode="decimal"></div>
+          <div class="field field-wide"><label>Dòng tiền từng kỳ (triệu ₫)</label><textarea data-fin="cashFlows" rows="3" spellcheck="false">${escapeHtml(financeState.cashFlows)}</textarea></div>
+        </div>
+        <div class="field-hint">Nhập dòng tiền ban đầu là số âm, sau đó là dòng tiền từng năm. Ví dụ: <b>-1200, 350, 400, 450, 500</b>. Có thể xuống dòng để dễ đọc.</div>`;
+    }
+    if (financeState.tab === "wacc") {
+      return `<div class="form-grid">
+          <div class="field"><label>Vốn chủ sở hữu E (₫)</label><input data-fin="waccEquity" value="${escapeHtml(financeState.waccEquity)}" inputmode="numeric"></div>
+          <div class="field"><label>Nợ vay D (₫)</label><input data-fin="waccDebt" value="${escapeHtml(financeState.waccDebt)}" inputmode="numeric"></div>
+          <div class="field"><label>Vốn cổ phần ưu đãi P (₫)</label><input data-fin="waccPreferred" value="${escapeHtml(financeState.waccPreferred)}" inputmode="numeric"></div>
+          <div class="field"><label>Chi phí vốn chủ Re (%)</label><input data-fin="waccCostEquity" value="${escapeHtml(financeState.waccCostEquity)}" inputmode="decimal"></div>
+          <div class="field"><label>Chi phí nợ vay Rd (%)</label><input data-fin="waccCostDebt" value="${escapeHtml(financeState.waccCostDebt)}" inputmode="decimal"></div>
+          <div class="field"><label>Chi phí vốn ưu đãi Rp (%)</label><input data-fin="waccCostPreferred" value="${escapeHtml(financeState.waccCostPreferred)}" inputmode="decimal"></div>
+          <div class="field"><label>Thuế suất doanh nghiệp Tc (%)</label><input data-fin="waccTax" value="${escapeHtml(financeState.waccTax)}" inputmode="decimal"></div>
+        </div>
+        <div class="field-hint">Để trống hoặc nhập 0 nếu doanh nghiệp không có vốn ưu đãi. WACC càng thấp thì chi phí sử dụng vốn càng rẻ.</div>`;
+    }
     if (financeState.tab === "loan") {
       return `<div class="form-grid">
           <div class="field"><label>Số tiền vay (₫)</label><input data-fin="loan" value="${escapeHtml(financeState.loan)}" inputmode="numeric"></div>
@@ -11721,15 +12913,19 @@ a { color: var(--amber); }
   function openFinanceWorkspace(tab) {
     closeModal();
     if (tab) financeState.tab = tab;
-    if (!["compound", "savings", "loan"].includes(financeState.tab)) financeState.tab = "compound";
-    const tabs = [["compound", "Lãi kép"], ["savings", "Tiết kiệm"], ["loan", "Vay vốn"]];
+    if (!["compound", "savings", "loan", "npv", "wacc"].includes(financeState.tab)) financeState.tab = "compound";
+    const tabs = [["compound", "Lãi kép"], ["savings", "Tiết kiệm"], ["loan", "Vay vốn"], ["npv", "NPV · IRR"], ["wacc", "WACC"]];
     const lead = financeState.tab === "loan"
       ? "Tính khoản trả định kỳ, tổng tiền phải trả và tổng lãi của một khoản vay."
       : financeState.tab === "savings"
         ? "Ước tính số dư tương lai khi gửi tiết kiệm ban đầu và gửi thêm mỗi tháng."
-        : "Tính giá trị tương lai và tiền lãi của khoản đầu tư theo lãi kép.";
+        : financeState.tab === "npv"
+          ? "Phân tích dòng tiền: NPV, IRR, chỉ số sinh lời, thời gian hoàn vốn và MIRR."
+          : financeState.tab === "wacc"
+            ? "Tính chi phí vốn bình quân gia quyền từ cơ cấu vốn chủ, nợ vay và vốn ưu đãi."
+            : "Tính giá trị tương lai và tiền lãi của khoản đầu tư theo lãi kép.";
     const body = `<p class="workspace-lead">${lead} Các con số chỉ mang tính tham khảo.</p>
-      <div class="segmented">${tabs.map(([id, label]) => `<button class="seg-btn ${financeState.tab === id ? "is-active" : ""}" type="button" data-finance-tab="${id}">${label}</button>`).join("")}</div>
+      <div class="segmented finance-tabs">${tabs.map(([id, label]) => `<button class="seg-btn ${financeState.tab === id ? "is-active" : ""}" type="button" data-finance-tab="${id}">${label}</button>`).join("")}</div>
       <div class="finance-form">${financeFormMarkup()}</div>
       <div id="financeResults" class="finance-results">${financeResultMarkup()}</div>
       <div class="button-row between">
@@ -11738,7 +12934,7 @@ a { color: var(--amber); }
       </div>`;
     openModal({
       title: "Tài chính",
-      kicker: "FINANCE LAB · LÃI KÉP & VAY VỐN",
+      kicker: "FINANCE LAB · NPV · IRR · WACC",
       icon: "finance",
       wide: true,
       body,
@@ -13484,6 +14680,7 @@ a { color: var(--amber); }
       case "quickstats": openQuickStatsWorkspace(); break;
       case "number": openNumberWorkspace(); break;
       case "units": openConversionsModal(); break;
+      case "chemistry": openChemistryWorkspace(); break;
       case "finance": openFinanceWorkspace(); break;
       case "physics": openPhysicsWorkspace(); break;
       case "series": openSeriesWorkspace(); break;
@@ -13784,9 +14981,6 @@ a { color: var(--amber); }
     initialize();
   }
 
-})();
-
-
-</script>
+})();</script>
 </body>
 </html>
